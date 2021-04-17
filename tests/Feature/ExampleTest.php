@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -14,8 +16,13 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/');
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
 
-        $response->assertStatus(200);
+        $response = $this->get('/api/user');
+
+        $response->assertOk();
     }
 }

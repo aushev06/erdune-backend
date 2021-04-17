@@ -19,13 +19,15 @@ class CreatePostsTable extends Migration
                 $table->id();
                 $table->string('title');
                 $table->json('body');
+                $table->text('description');
                 $table->string('img')->nullable();
                 $table->string('slug')->unique();
                 $table->integer('views')->default(0);
                 $table->string('meta_description')->nullable();
                 $table->string('meta_keywords')->nullable();
                 $table->string('status')->default('pending')->index();
-                $table->integer('rating')->default(0);
+                $table->integer('likes')->default(0);
+                $table->integer('dislikes')->default(0);
 
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->bigInteger('user_id')->unsigned();

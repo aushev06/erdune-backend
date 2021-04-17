@@ -19,12 +19,12 @@ class CreateUsersTable extends Migration
                 $table->id();
                 $table->string('name');
                 $table->string('email')->unique();
-                $table->string('position');
+                $table->string('position')->nullable();
                 $table->string('avatar')->nullable();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
-                $table->text('description');
-                $table->tinyInteger('ready_for_work');
+                $table->text('description')->nullable();
+                $table->tinyInteger('ready_for_work')->default(0);
                 $table->boolean('recognized')->default(false);
                 $table->string('status')->default('active');
                 $table->rememberToken();
