@@ -17,7 +17,7 @@ class PostPolicy
      * @param User $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
@@ -29,9 +29,9 @@ class PostPolicy
      * @param \App\Models\Post $post
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view(?User $user, Post $post)
     {
-        return $user->role === 'admin' || $post->status === StatusEnum::STATUS_ACTIVE || $post->user_id === $user->id;
+        return $post->status === StatusEnum::STATUS_ACTIVE || $user->role === 'admin' || $post->user_id === $user->id;
     }
 
     /**
