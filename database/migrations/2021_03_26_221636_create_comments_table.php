@@ -13,21 +13,24 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->text("text");
-            $table->bigInteger("user_id")->unsigned();
-            $table->bigInteger('post_id')->unsigned();
-            $table->bigInteger('user_id_reply')->nullable();
-            $table->bigInteger('parent_id')->default(0); // Самый первый комментарий в ветке
-            $table->integer('likes_count')->default(0);
-            $table->integer('dislikes_count')->default(0);
-            $table->foreign("user_id")->references('id')->on('users');
-            $table->foreign("post_id")->references('id')->on('posts');
+        Schema::create(
+            'comments',
+            function (Blueprint $table) {
+                $table->id();
+                $table->text("text");
+                $table->bigInteger("user_id")->unsigned();
+                $table->bigInteger('post_id')->unsigned();
+                $table->bigInteger('user_reply_id')->nullable();
+                $table->bigInteger('parent_id')->unsigned()->nullable(); // Самый первый комментарий в ветке
 
-            $table->softDeletes();
-            $table->timestamps();
-        });
+                $table->foreign("user_id")->references('id')->on('users');
+                $table->foreign("post_id")->references('id')->on('posts');
+                $table->foreign("parent_id")->references('id')->on('comments');
+
+                $table->softDeletes();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

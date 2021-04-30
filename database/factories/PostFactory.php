@@ -133,8 +133,9 @@ JSON;
             'title'       => $this->faker->name,
             'description' => $this->faker->realText(300),
             'body'        => $JSON,
-            'likes'       => rand(0, 5), // password
-            'dislikes'    => rand(0, 5),
+            'likes'       => rand(0, 30), // password
+            'dislikes'    => rand(0, 30),
+            'views'       => rand(0, 150),
             'user_id'     => UserFactory::new()->create()->id,
             'status'      => 'active'
         ];

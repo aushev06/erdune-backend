@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get(
+    '/',
+    function () {
+        return view('welcome');
+    }
+);
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/login/vk', [\App\Auth\Controllers\SocialLoginController::class, 'callbackVK']);
+Route::get(
+    '/social/vk',
+    function () {
+        return Socialite::with('vkontakte')->redirect();
+    }
+);
+
+Route::group(
+    ['auth'],
+    function () {
+        Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
+
+        Route::apiResource('posts', \App\Blog\Controllers\PostController::class);
+        Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy']);
+
+    }
+);

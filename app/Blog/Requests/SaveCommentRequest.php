@@ -5,15 +5,7 @@ namespace App\Blog\Requests;
 use App\Blog\Enums\StatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class SavePostRequest
- *
- * @property string $body
- * @property string $title
- *
- * @package App\Blog\Requests
- */
-class SavePostRequest extends FormRequest
+class SaveCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,8 +25,8 @@ class SavePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'body'  => 'required'
+            'text'    => 'required',
+            'post_id' => 'required'
         ];
     }
 }

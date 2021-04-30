@@ -35,7 +35,7 @@ class PostTest extends TestCase
         {
             "type" : "paragraph",
             "data" : {
-                "text" : "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
+                "text" : "<script>alert(123)</script> Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
             }
         },
         {
@@ -130,7 +130,7 @@ JSON;
         $data = [
             'title'       => 'My First Post',
             'description' => 'its description with JavaScript <script>alert(123123)</script>',
-            'body'        => trim($JSON),
+            'body'        => json_decode($JSON),
         ];
         $response = $this->post('/api/posts', $data);
 

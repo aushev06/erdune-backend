@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $email
  * @property string $position
  * @property string $avatar
+ * @property string $role
  * @property string $email_verified_at
  * @property string $password
  * @property string $description
@@ -45,6 +46,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'social_id',
+        'network',
+        'role',
+        'ip'
     ];
 
     /**
@@ -55,4 +60,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function createIfNotExistAndAuth(User|null $user = null, $userFields = []): void
+    {
+        if ($user === null) {
+            $user = static::query()->create($userFields);
+        }
+        auth()->loginUsingId($user->id, true);
+    }
 }

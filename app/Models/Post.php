@@ -5,6 +5,8 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -22,7 +24,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $likes
  * @property int $dislikes
  *
+ * @property-read int $comments_count
+ *
  * @property User $user
+ * @property Comment[] $comments
  */
 class Post extends Model
 {
@@ -34,11 +39,20 @@ class Post extends Model
         'title',
     ];
 
+    protected $with = ['user'];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\HasOne
+    protected $withCount = ['comments'];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 
     public function sluggable(): array
     {
