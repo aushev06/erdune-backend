@@ -21,19 +21,8 @@ class CommentController extends Controller
 
     public function index()
     {
-        /**
-         * @var Comment $topComment
-         */
-        $topComment = Comment::query()
-            ->with('post')
-            ->orderByDesc('likes')
-            ->orderByDesc('dislikes')
-            ->where('created_at', '!=', 'now()')
-            ->first();
+        $topComment = $this->service->getTopComment();
 
-        /**
-         * @var Comment[] $comments
-         */
         $comments = Comment::query()
             ->with('post')
             ->where('id', '!=', $topComment->id ?? 0)
@@ -42,7 +31,7 @@ class CommentController extends Controller
             ->get()
             ->toArray();
 
-        return array_merge([$topComment], $comments);
+        return $topComment ? array_merge([$topComment], $comments) : $comments;
     }
 
 

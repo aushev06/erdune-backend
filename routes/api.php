@@ -22,11 +22,15 @@ Route::middleware('auth:sanctum')->get(
 );
 
 
-Route::get('/test', [\App\Blog\Controllers\PostController::class, 'index']);
-
 Route::group(
     ['auth:sanctum'],
     function () {
         Route::resource('posts', \App\Blog\Controllers\PostController::class);
+
+        Route::options('posts/image-by-url', function () {
+            return "ok";
+        });
+
+        Route::post('posts/image-by-url', [\App\Blog\Controllers\PostController::class, 'saveByUrl']);
     }
 );

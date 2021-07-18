@@ -18,6 +18,7 @@ class PostService
         $post->description = htmlspecialchars($formRequest->description);
         $post->user_id     = $formRequest->user()->id;
         $post->slug        = SlugService::createSlug(Post::class, 'slug', $post->title);
+        $post->img         = $this->getImage($formRequest->body);
         $post->save();
 
         return $post;
@@ -25,12 +26,22 @@ class PostService
 
     private function clearHtmlFromBody($body): string
     {
-        foreach ($body->blocks as $key => $block) {
-            if (isset($block->data->text)) {
-                $body->blocks[$key]->data->text = htmlspecialchars($block->data->text);
+        foreach ($body as $key => $block) {
+            if (isset($block['data']['text'])) {
+                $body[$key]['data']['text'] = htmlspecialchars($block['data']['text']);
             }
         }
 
         return json_encode($body);
     }
+
+    private function getImage($body): ?string
+    {
+        foreach ($body as $key => $block) {
+            if (isset($block['data']['file'])) {
+                return $block['data']['file']['url'];
+            }
+        }
+    }
+
 }

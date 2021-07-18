@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Comment
@@ -19,8 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Post $post
  * @property User $user
+ *
  */
-class Comment extends Model
+class Comment extends BaseModel
 {
     use HasFactory;
 
@@ -42,12 +41,12 @@ class Comment extends Model
 
     public function likes()
     {
-        return $this->morphOne(Likeable::class, 'likeable')->where('type', 'like');
+        return $this->morphOne(Likeable::class, 'likeable')->where('type', '=', 'like');
     }
 
     public function dislikes()
     {
-        return $this->morphOne(Likeable::class, 'likeable')->where('type', 'dislike');
+        return $this->morphOne(Likeable::class, 'likeable')->where('type',  '=', 'dislike');
     }
 
 }

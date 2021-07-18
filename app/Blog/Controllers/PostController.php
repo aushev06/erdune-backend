@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -108,4 +109,34 @@ class PostController extends Controller
             throw new \Exception($exception, 400);
         }
     }
+
+
+    public function saveByUrl(Request $request)
+    {
+        $url = $request->post('url');
+        if ($url) {
+            $extension = last(explode('.', $url));
+
+            $filename = implode('.', [time(), $extension]);
+
+            $path = ['app', 'public', 'images', $filename];
+
+            copy($url, implode('/', [app()->storagePath(), ...$path]));
+
+            return [
+                'success' => 1,
+                'file'    => [
+                    'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
+                ]
+            ];
+        }
+
+        return [
+            'success' => 1,
+            'file'    => [
+                'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $request->file('image')->store('public/images')]))
+            ]
+        ];
+    }
+
 }

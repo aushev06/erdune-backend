@@ -38,8 +38,7 @@ Route::group(
     function () {
         Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
 
-        Route::apiResource('posts', \App\Blog\Controllers\PostController::class);
+//        Route::apiResource('posts', \App\Blog\Controllers\PostController::class);
         Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy']);
-
     }
 );

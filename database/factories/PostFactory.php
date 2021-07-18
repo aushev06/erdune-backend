@@ -137,7 +137,8 @@ JSON;
             'dislikes'    => rand(0, 30),
             'views'       => rand(0, 150),
             'user_id'     => UserFactory::new()->create()->id,
-            'status'      => 'active'
+            'status'      => 'active',
+            'img'         => $this->faker->imageUrl(),
         ];
     }
 
