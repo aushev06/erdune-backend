@@ -23,7 +23,7 @@ class Comment extends BaseModel
 {
     use HasFactory;
 
-    protected $fillable = ['text', 'post_id'];
+    protected $fillable = ['text', 'post_id', 'user_reply_id', 'parent_id'];
 
     protected $with = ['user'];
 
@@ -48,5 +48,10 @@ class Comment extends BaseModel
     {
         return $this->morphOne(Likeable::class, 'likeable')->where('type',  '=', 'dislike');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
 
 }

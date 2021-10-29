@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class BaseModel
@@ -27,5 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class BaseModel extends Model
 {
-
+    public static function getUserLikedTypeQuery(string $table, string $model, User $user): \Illuminate\Database\Query\Expression
+    {
+        return DB::raw("type FROM likeables l WHERE likeable_id={$table}.id AND likeable_type LIKE '%{$model}%' AND user_id={$user->id} LIMIT 1");
+    }
 }

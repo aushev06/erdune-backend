@@ -12,6 +12,7 @@ class CommentService
     public function save(Comment $comment, FormRequest $formRequest): Comment
     {
         $comment->fill($formRequest->validated());
+        $comment->user_id = $formRequest->user('api')->id;
         $comment->save();
 
         return $comment;

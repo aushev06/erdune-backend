@@ -22,7 +22,7 @@ class SavePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->status === StatusEnum::STATUS_ACTIVE;
+        return auth('api')->user()->status === StatusEnum::STATUS_ACTIVE;
     }
 
     /**
@@ -34,7 +34,10 @@ class SavePostRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'body'  => 'required'
+            'body' => 'required',
+            'themes.*.name' => 'required',
+            'category.id' => 'exists:categories,id'
+
         ];
     }
 }

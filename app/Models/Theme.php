@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Likeable extends BaseModel
+/**
+ * Class Theme
+ * @property int $id
+ * @property string $name
+ */
+class Theme extends Model
 {
     use HasFactory;
 
-    public function likeable()
-    {
-        return $this->morphTo();
-    }
+    protected $fillable = ['name'];
+
 }

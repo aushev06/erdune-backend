@@ -31,7 +31,7 @@ class PostPolicy
      */
     public function view(?User $user, Post $post)
     {
-        return $post->status === StatusEnum::STATUS_ACTIVE || $user->role === 'admin' || $post->user_id === $user->id;
+        return $post->status === StatusEnum::STATUS_ACTIVE || $user && $user->role === 'admin' || $user && $post->user_id === $user->id;
     }
 
     /**

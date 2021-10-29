@@ -32,13 +32,3 @@ Route::get(
         return Socialite::with('vkontakte')->redirect();
     }
 );
-
-Route::group(
-    ['auth'],
-    function () {
-        Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
-
-//        Route::apiResource('posts', \App\Blog\Controllers\PostController::class);
-        Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy']);
-    }
-);

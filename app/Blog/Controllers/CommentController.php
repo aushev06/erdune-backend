@@ -6,9 +6,13 @@ use App\Blog\Requests\SaveCommentRequest;
 use App\Blog\Services\CommentService;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\Likeable;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
@@ -38,7 +42,7 @@ class CommentController extends Controller
     public function store(SaveCommentRequest $request, Comment $comment): Comment
     {
         try {
-            return $this->service->save($comment, $request);
+            return Comment::query()->where('id', $this->service->save($comment, $request)->id)->first();
         } catch (\Throwable $exception) {
             Log::error($exception->getMessage());
             Log::error($exception->getTraceAsString());
@@ -50,7 +54,7 @@ class CommentController extends Controller
     public function update(SaveCommentRequest $request, Comment $comment): Comment
     {
         try {
-            return $this->service->save($comment, $request);
+            return Comment::query()->where('id', $this->service->save($comment, $request)->id)->first();
         } catch (\Throwable $exception) {
             Log::error($exception->getMessage());
             Log::error($exception->getTraceAsString());
@@ -58,9 +62,23 @@ class CommentController extends Controller
         }
     }
 
-    public function show(Post $post)
+    public function show(Post $post, Request $request)
     {
-        return $post->comments()->orderByDesc('id')->get();
+        $queryBuilder = $post->comments();
+
+
+        if ($user = $request->user('api')) {
+            $queryBuilder->addSelect(['liked_type' => function(Builder $q) use($user)  {
+                return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
+            }]);
+        }
+
+        return
+        $queryBuilder
+            ->orderByDesc('id')
+            ->with('comments')
+            ->where('parent_id', null)
+            ->get();
     }
 
     public function destroy(Comment $comment)

@@ -4,16 +4,20 @@
 namespace App\Blog\Controllers;
 
 
+use App\Blog\Enums\StatusEnum;
+use App\Models\Likeable;
 use App\Models\Post;
 use App\Blog\Requests\SavePostRequest;
 use App\Blog\Resources\PostCollection;
 use App\Blog\Resources\PostResource;
 use App\Blog\Services\PostService;
 use App\Http\Controllers\Controller;
+use App\Models\Theme;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -29,20 +33,9 @@ class PostController extends Controller
      */
     public function index(Request $request): PostCollection
     {
-        $query = Post::query();
-
-        if ($request->popular) {
-            $query->orderByDesc('likes');
-            $query->orderByDesc('dislikes');
-            $query->orderByDesc('views');
-            $query->orderByDesc('comments_count');
-        } else {
-            $query->orderByDesc('id');
-        }
-
         return new PostCollection(
             PostResource::collection(
-                $query->paginate()
+                $this->postService->getPostsQuery($request)->paginate()
             )
         );
     }
@@ -70,8 +63,15 @@ class PostController extends Controller
      * @param Post $post
      * @return PostResource
      */
-    public function show(Post $post)
+    public function show(string $slug, Request $request)
     {
+        $post = Post::query()->where('slug', $slug)
+            ->when($request->user('api'), function (Builder $builder, User $user) {
+                $builder->addSelect(['liked_type' => function(QB $qb) use($user) {
+                    return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
+                }]);
+            })
+            ->first();
         $this->authorize('view', $post);
 
         return new PostResource($post);
@@ -125,7 +125,7 @@ class PostController extends Controller
 
             return [
                 'success' => 1,
-                'file'    => [
+                'file' => [
                     'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
                 ]
             ];
@@ -133,10 +133,15 @@ class PostController extends Controller
 
         return [
             'success' => 1,
-            'file'    => [
+            'file' => [
                 'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $request->file('image')->store('public/images')]))
             ]
         ];
+    }
+
+    public function getThemes(): \Illuminate\Database\Eloquent\Collection|array
+    {
+        return Theme::query()->get();
     }
 
 }

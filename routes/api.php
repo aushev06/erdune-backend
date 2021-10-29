@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get(
     '/user',
     function (Request $request) {
-        return $request->user();
+        return array_merge($request->user()->toArray(), ['token' => $request->user()->createToken('auth_token')->plainTextToken]);
     }
 );
 
@@ -25,12 +25,23 @@ Route::middleware('auth:sanctum')->get(
 Route::group(
     ['auth:sanctum'],
     function () {
-        Route::resource('posts', \App\Blog\Controllers\PostController::class);
+        Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['store', 'update', 'destroy']);
 
         Route::options('posts/image-by-url', function () {
             return "ok";
         });
 
         Route::post('posts/image-by-url', [\App\Blog\Controllers\PostController::class, 'saveByUrl']);
+        Route::post('/user', \App\Blog\Actions\ProfileAction::class);
+        Route::post('/likes/', [\App\Blog\Controllers\LikeController::class, 'like']);
     }
 );
+
+
+Route::get('users/categories', [\App\Blog\Controllers\UsersController::class, 'categories']);
+Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);
+Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
+Route::resource('users', \App\Blog\Controllers\UsersController::class)->only(['index', 'show']);
+Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
+Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy', 'store']);
+Route::apiResource('categories', \App\Blog\Controllers\CategoryController::class);

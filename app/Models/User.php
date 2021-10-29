@@ -26,6 +26,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    protected $withCount = ['comments'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -61,11 +63,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function createIfNotExistAndAuth(User|null $user = null, $userFields = []): void
+    public static function createIfNotExistAndAuth(User|null $user = null, $userFields = []): User
     {
         if ($user === null) {
             $user = static::query()->create($userFields);
         }
-        auth()->loginUsingId($user->id, true);
+        return $user;
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
 }

@@ -128,9 +128,10 @@ class PostTest extends TestCase
 JSON;
 
         $data = [
-            'title'       => 'My First Post',
+            'title' => 'My First Post',
             'description' => 'its description with JavaScript <script>alert(123123)</script>',
-            'body'        => json_decode($JSON),
+            'body' => json_decode($JSON),
+            'themes' => ['#test']
         ];
         $response = $this->post('/api/posts', $data);
 
