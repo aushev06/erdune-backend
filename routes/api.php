@@ -45,3 +45,4 @@ Route::resource('users', \App\Blog\Controllers\UsersController::class)->only(['i
 Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
 Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy', 'store']);
 Route::apiResource('categories', \App\Blog\Controllers\CategoryController::class);
+Route::apiResource('directories', \App\Blog\Controllers\DirectoryController::class)->only(['index']);
