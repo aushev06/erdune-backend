@@ -19,21 +19,12 @@ class DatabaseSeeder extends Seeder
         Post::factory()->count(50)->create();
         Comment::factory()->count(300)->create();
 
-
-        $themes = ['разработка', 'советы', 'дизайн', 'инструкции', 'mvp', 'проектирование', 'инструментарий', 'болтология', 'работа'];
-
-        foreach ($themes as $theme) {
-            Theme::query()->create(['name' => implode('#', ['', $theme])]);
-        }
-
         $posts = Post::all();
 
         $posts->each(function (Post $post) {
             $themes = Theme::query()->inRandomOrder()->limit(5)->get();
             $post->themes()->sync($themes->map(fn(Theme $theme) => $theme->id));
         });
-
-
 
 
     }
