@@ -31,7 +31,11 @@ class CreateUsersTable extends Migration
                 $table->text('description')->nullable();
                 $table->tinyInteger('ready_for_work')->default(0);
                 $table->boolean('recognized')->default(false);
+                $table->boolean('is_new_comment_notification')->default(true);
+                $table->boolean('is_reply_to_my_comment_notification')->default(true);
+                $table->boolean('is_new_follower_notification')->default(true);
                 $table->string('status')->default('active');
+                $table->json('links')->nullable(true);
                 $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();

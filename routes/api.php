@@ -32,7 +32,7 @@ Route::group(
         });
 
         Route::post('posts/image-by-url', [\App\Blog\Controllers\PostController::class, 'saveByUrl']);
-        Route::post('/user', \App\Blog\Actions\ProfileAction::class);
+        Route::patch('/user/{user}', \App\Blog\Actions\ProfileAction::class);
         Route::post('/likes/', [\App\Blog\Controllers\LikeController::class, 'like']);
     }
 );

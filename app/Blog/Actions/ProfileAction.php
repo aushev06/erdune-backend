@@ -15,7 +15,7 @@ class ProfileAction extends Controller
         $this->middleware('auth:sanctum');
     }
 
-    public function __invoke(SaveUserRequest $request)
+    public function __invoke(User $user, SaveUserRequest $request)
     {
         $request->user('api')->update($request->validated());
         return User::where('id', $request->user('api')->id)->first();

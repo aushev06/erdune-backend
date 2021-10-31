@@ -40,6 +40,7 @@ class SocialLoginController extends Controller
             'network'   => 'vk',
             'ip'        => $request->ip(),
             'password'  => Hash::make(rand(0, 1000)),
+            'links' => []
         ];
 
         $user = User::createIfNotExistAndAuth(userFields:$newUser);

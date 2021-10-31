@@ -21,24 +21,16 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $ready_for_work
  * @property boolean $recognized
  * @property string $status
+ * @property boolean $is_new_comment_notification
+ * @property boolean $is_reply_to_my_comment_notification
+ * @property boolean $is_new_follower_notification
+ * @property array $links
  */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
     protected $withCount = ['comments'];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'position'
-    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -55,12 +47,30 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'position',
+        'is_new_comment_notification',
+        'is_reply_to_my_comment_notification',
+        'is_new_follower_notification',
+        'links',
+        'ready_for_work'
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'links' => 'array'
     ];
 
     public static function createIfNotExistAndAuth(User|null $user = null, $userFields = []): User
