@@ -60,7 +60,8 @@ class User extends Authenticatable
         'is_reply_to_my_comment_notification',
         'is_new_follower_notification',
         'links',
-        'ready_for_work'
+        'ready_for_work',
+        'social_id'
     ];
 
     /**

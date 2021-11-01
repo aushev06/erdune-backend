@@ -34,7 +34,7 @@ class SocialLoginController extends Controller
             'name'      => $responseUser->getName(),
             'avatar'    => $responseUser->getAvatar(),
             'country'   => $responseUser->user['country'] ?? '',
-            'email'     => $responseUser->email,
+            'email'     => $responseUser->email ?? '',
             'social_id' => $responseUser->getId(),
             'role'      => 'user',
             'network'   => 'vk',
