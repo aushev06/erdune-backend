@@ -25,6 +25,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property boolean $is_reply_to_my_comment_notification
  * @property boolean $is_new_follower_notification
  * @property array $links
+ * @property string $login
  */
 class User extends Authenticatable
 {
@@ -61,7 +62,10 @@ class User extends Authenticatable
         'is_new_follower_notification',
         'links',
         'ready_for_work',
-        'social_id'
+        'social_id',
+        'avatar',
+        'description',
+        'login'
     ];
 
     /**

@@ -5,6 +5,7 @@ namespace App\Blog\Services;
 
 
 use App\Blog\Enums\StatusEnum;
+use App\Models\Category;
 use App\Models\Likeable;
 use App\Models\Post;
 use App\Models\Theme;
@@ -102,6 +103,19 @@ class PostService
                 $subBuilder->whereIn('themes.name', $themes);
             });
         });
+
+        $query->when($request->categories, function (Builder $builder, string $categories) {
+            $categories = explode(',', $categories);
+            $categoryIds = [];
+
+            if (is_numeric($categories[0])) {
+                $categoryIds = Category::query()->select(['id'])->whereIn('id', $categories)->get()->map(fn (Category $category) => $category->id)->toArray();
+            } else {
+                $categoryIds = Category::query()->select(['id'])->whereIn('slug', $categories)->get()->map(fn (Category $category) => $category->id)->toArray();
+            }
+            $builder->whereIn('category_id', $categoryIds);
+        });
+
 
         $query->when($request->user('api'), function (Builder $builder, User $user) {
             $builder->addSelect(['liked_type' => function(QB $qb) use($user) {

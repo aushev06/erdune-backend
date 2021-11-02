@@ -25,9 +25,11 @@ class SaveUserRequest extends FormRequest
     {
         $rules = [
             'email' => 'unique:users,email,' . $this->user()->id,
+            'login' => 'unique:users,login,' . $this->user()->id,
             'ready_for_work' => 'boolean',
             'links' => 'array',
-            'position' => 'nullable'
+            'position' => 'nullable',
+            'avatar' => 'nullable'
         ];
 
         if (empty($this->user()->position) && $this->post('ready_for_work')) {

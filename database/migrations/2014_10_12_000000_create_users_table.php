@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
+                $table->string('login')->nullable(true);
                 $table->string('email')->unique();
                 $table->string('position')->nullable();
                 $table->string('country')->nullable();
