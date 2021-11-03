@@ -34,9 +34,7 @@ class PostController extends Controller
     public function index(Request $request): PostCollection
     {
         return new PostCollection(
-            PostResource::collection(
-                $this->postService->getPostsQuery($request)->paginate()
-            )
+            $this->postService->getPostsQuery($request)->paginate()
         );
     }
 

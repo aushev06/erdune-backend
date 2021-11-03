@@ -2,6 +2,7 @@
 
 namespace App\Blog\Controllers;
 
+use App\Blog\Resources\UserCollection;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,8 +19,8 @@ class UsersController extends Controller
             $qb->where('position', '!=', null);
         }
 
-        if ($request->ready_for_work) {
-            $qb->where('ready_for_work', true);
+        if (isset($request->ready_for_work)) {
+            $qb->where('ready_for_work', $request->ready_for_work == 'true');
         }
 
         if ($request->positions) {
@@ -27,7 +28,7 @@ class UsersController extends Controller
         }
 
 
-        return $qb->paginate(10);
+        return new UserCollection($qb->paginate(10));
     }
 
     public function show(User $user) {
