@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use \Illuminate\Database\Query\Builder as QB;
+use JetBrains\PhpStorm\ArrayShape;
+
 class PostService
 {
     public function save(Post $post, FormRequest $formRequest): Post
@@ -79,7 +81,7 @@ class PostService
         }, function (Builder $builder) use ($request) {
             return $builder
                 ->where('status', StatusEnum::STATUS_ACTIVE)
-                ->when($request->user_ids, static function(Builder $subBuilder, string $ids) {
+                ->when($request->user_ids, static function (Builder $subBuilder, string $ids) {
                     return $subBuilder->whereIn('user_id', explode(',', $ids));
                 });
 
@@ -109,22 +111,41 @@ class PostService
             $categoryIds = [];
 
             if (is_numeric($categories[0])) {
-                $categoryIds = Category::query()->select(['id'])->whereIn('id', $categories)->get()->map(fn (Category $category) => $category->id)->toArray();
+                $categoryIds = Category::query()->select(['id'])->whereIn('id', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
             } else {
-                $categoryIds = Category::query()->select(['id'])->whereIn('slug', $categories)->get()->map(fn (Category $category) => $category->id)->toArray();
+                $categoryIds = Category::query()->select(['id'])->whereIn('slug', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
             }
             $builder->whereIn('category_id', $categoryIds);
         });
 
 
         $query->when($request->user('api'), function (Builder $builder, User $user) {
-            $builder->addSelect(['liked_type' => function(QB $qb) use($user) {
+            $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
                 return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
             }]);
         });
 
         return $query;
 
+    }
+
+
+    #[ArrayShape(['success' => "int", 'file' => "array"])] public static function saveImage(Request $request): array
+    {
+        $url = $request->post('url');
+        if ($url) {
+            $extension = last(explode('.', $url));
+            $filename = implode('.', [time(), $extension]);
+            $path = ['app', 'public', 'images', $filename];
+
+            copy($url, implode('/', [app()->storagePath(), ...$path]));
+            return [
+                'success' => 1,
+                'file' => [
+                    'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
+                ]
+            ];
+        }
     }
 
 }

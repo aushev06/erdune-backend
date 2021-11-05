@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class PostController extends Controller
 {
@@ -51,6 +53,8 @@ class PostController extends Controller
         try {
             return new PostResource($this->postService->save($post, $request));
         } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
             throw new \Exception($exception, 400);
         }
     }
@@ -88,6 +92,8 @@ class PostController extends Controller
         try {
             return new PostResource($this->postService->save($post, $request));
         } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
             throw new \Exception($exception, 400);
         }
     }
@@ -104,6 +110,8 @@ class PostController extends Controller
         try {
             $post->delete();
         } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
             throw new \Exception($exception, 400);
         }
     }
@@ -111,30 +119,13 @@ class PostController extends Controller
 
     public function saveByUrl(Request $request)
     {
-        $url = $request->post('url');
-        if ($url) {
-            $extension = last(explode('.', $url));
-
-            $filename = implode('.', [time(), $extension]);
-
-            $path = ['app', 'public', 'images', $filename];
-
-            copy($url, implode('/', [app()->storagePath(), ...$path]));
-
-            return [
-                'success' => 1,
-                'file' => [
-                    'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
-                ]
-            ];
+        try {
+            return $this->postService::saveImage($request);
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+            Log::error($exception->getTraceAsString());
+            throw new \Exception($exception, 400);
         }
-
-        return [
-            'success' => 1,
-            'file' => [
-                'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $request->file('image')->store('public/images')]))
-            ]
-        ];
     }
 
     public function getThemes(): \Illuminate\Database\Eloquent\Collection|array
