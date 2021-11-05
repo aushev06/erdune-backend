@@ -23,19 +23,13 @@ class CommentController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
         $topComment = $this->service->getTopComment();
 
-        $comments = Comment::query()
-            ->with('post')
-            ->where('id', '!=', $topComment->id ?? 0)
-            ->take(10)
-            ->orderByDesc('id')
-            ->get()
-            ->toArray();
-
-        return $topComment ? array_merge([$topComment], $comments) : $comments;
+        return $topComment ?
+            array_merge([$topComment], $this->service->getCommentsWithoutTopComment($request, $topComment))
+            : $this->service->getCommentsWithoutTopComment($request);
     }
 
 
@@ -68,17 +62,17 @@ class CommentController extends Controller
 
 
         if ($user = $request->user('api')) {
-            $queryBuilder->addSelect(['liked_type' => function(Builder $q) use($user)  {
+            $queryBuilder->addSelect(['liked_type' => function (Builder $q) use ($user) {
                 return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
             }]);
         }
 
         return
-        $queryBuilder
-            ->orderByDesc('id')
-            ->with('comments')
-            ->where('parent_id', null)
-            ->get();
+            $queryBuilder
+                ->orderByDesc('id')
+                ->with('comments')
+                ->where('parent_id', null)
+                ->get();
     }
 
     public function destroy(Comment $comment)

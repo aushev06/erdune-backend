@@ -5,7 +5,9 @@ namespace App\Blog\Services;
 
 
 use App\Models\Comment;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class CommentService
 {
@@ -33,5 +35,22 @@ class CommentService
             ->where('created_at', '!=', 'now()')
             ->first();
     }
+
+    public function getCommentsWithoutTopComment(Request $request, ?Comment $topComment = null): array
+    {
+        return Comment::query()
+            ->with('post')
+            ->when($topComment?->id, static function (Builder $builder, int $id) {
+                return $builder->where('id', '!=', $id);
+            })
+            ->when($request->user_ids, static function (Builder $builder, string $ids) {
+                return $builder->whereIn('user_id', explode(',', $ids));
+            })
+            ->take(10)
+            ->orderByDesc('id')
+            ->get()
+            ->toArray();
+    }
+
 
 }
