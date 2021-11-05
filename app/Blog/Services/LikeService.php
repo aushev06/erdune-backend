@@ -21,6 +21,7 @@ class LikeService
         Likeable::query()
             ->where('likeable_id', $id)
             ->where('likeable_type', static::$types[$type])
+            ->where('user_id', $userId)
             ->delete();
 
         if (!$likeType) {
