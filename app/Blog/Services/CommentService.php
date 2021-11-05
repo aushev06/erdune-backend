@@ -13,6 +13,11 @@ class CommentService
     {
         $comment->fill($formRequest->validated());
         $comment->user_id = $formRequest->user('api')->id;
+
+        if ($comment->parent_id && $comment->id && $comment->id === $comment->parent_id) {
+            $comment->parent_id = null;
+        }
+
         $comment->save();
 
         return $comment;
