@@ -42,7 +42,7 @@ class CommentController extends Controller
     public function store(SaveCommentRequest $request, Comment $comment): Comment
     {
         try {
-            return Comment::query()->where('id', $this->service->save($comment, $request)->id)->first();
+            return $this->service->save($comment, $request);
         } catch (\Throwable $exception) {
             Log::error($exception->getMessage());
             Log::error($exception->getTraceAsString());
@@ -54,7 +54,7 @@ class CommentController extends Controller
     public function update(SaveCommentRequest $request, Comment $comment): Comment
     {
         try {
-            return Comment::query()->where('id', $this->service->save($comment, $request)->id)->first();
+            return $this->service->save($comment, $request);
         } catch (\Throwable $exception) {
             Log::error($exception->getMessage());
             Log::error($exception->getTraceAsString());

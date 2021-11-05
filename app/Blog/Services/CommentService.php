@@ -20,7 +20,7 @@ class CommentService
 
         $comment->save();
 
-        return $comment;
+        return Comment::query()->where('id', $comment->id)->first();
     }
 
 
