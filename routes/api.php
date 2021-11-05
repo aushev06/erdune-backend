@@ -31,7 +31,7 @@ Route::group(
             return "ok";
         });
 
-        Route::post('posts/image-by-url', [\App\Blog\Controllers\PostController::class, 'saveByUrl']);
+        Route::post('posts/image-by-url', \App\Blog\Actions\SaveImageAction::class);
         Route::patch('/user/{user}', \App\Blog\Actions\ProfileAction::class);
         Route::post('/likes/', [\App\Blog\Controllers\LikeController::class, 'like']);
     }
