@@ -73,7 +73,10 @@ class HomeService
 
     private function getCategories()
     {
-        return json_decode('[{"id":5,"name":"\u0414\u0438\u0437\u0430\u0439\u043d \u0437\u0430 \u0447\u0430\u0435\u043c","slug":"design-over-tea","created_at":null,"updated_at":null},{"id":4,"name":"Dev Review","slug":"dev-review","created_at":null,"updated_at":null},{"id":1,"name":"Dev Battle","slug":"dev-battle","created_at":null,"updated_at":null},{"id":3,"name":"Design Review","slug":"design-review","created_at":null,"updated_at":null},{"id":2,"name":"Design Battle","slug":"design-battle","created_at":null,"updated_at":null}]');
+        return Category::take(10)
+            ->orderByDesc('name')
+            ->get()
+            ->toArray();
     }
 
     public function getMainInfo(Request $request)
