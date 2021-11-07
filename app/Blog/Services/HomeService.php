@@ -24,7 +24,7 @@ use JetBrains\PhpStorm\ArrayShape;
 class HomeService
 {
 
-    private function getPosts() {
+    private function getPosts(Request $request) {
       $query = Post::query()->where('status', StatusEnum::STATUS_ACTIVE);
 
       $query->when($request->new, function (Builder $builder) {
@@ -57,7 +57,7 @@ class HomeService
           }]);
       });
 
-      return $query->paginate($request->limit || 10);
+      return $query->paginate(10);
     }
 
     private function getComments() {
@@ -74,7 +74,7 @@ class HomeService
     }
 
     public function getMainInfo(Request $request) {
-      $posts = $this->getPosts();
+      $posts = $this->getPosts($request);
       $comments = $this->getComments();
       $categories = $this->getCategories();
       
