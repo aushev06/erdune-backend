@@ -64,13 +64,15 @@ class HomeService
       return Comment::with('post:id,slug,title')
         ->take(10)
         ->orderByDesc('id')
-        ->get();
+        ->get()
+        ->toArray();
     }
 
     private function getCategories() {
       return Category::take(10)
         ->orderByDesc('name')
-        ->get();
+        ->get()
+        ->toArray();
     }
 
     public function getMainInfo(Request $request) {
@@ -78,7 +80,7 @@ class HomeService
       $comments = $this->getComments();
       $categories = $this->getCategories();
       
-      return dd([
+      return json_encode([
         'posts' => $posts,
         'comments' => $comments,
         'categories' => $categories
