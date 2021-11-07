@@ -24,7 +24,7 @@ use JetBrains\PhpStorm\ArrayShape;
 class HomeService
 {
 
-    private function getPosts(Request $request) {
+    private function getPosts() {
       $query = Post::query()->where('status', StatusEnum::STATUS_ACTIVE);
 
       $query->when($request->new, function (Builder $builder) {
@@ -73,7 +73,7 @@ class HomeService
         ->get();
     }
 
-    public function getMainInfo() {
+    public function getMainInfo(Request $request) {
       $posts = $this->getPosts();
       $comments = $this->getComments();
       $categories = $this->getCategories();
