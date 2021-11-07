@@ -5,6 +5,7 @@ namespace App\Blog\Services;
 
 
 use App\Blog\Enums\StatusEnum;
+use App\Blog\Helpers\TextHelper;
 use App\Models\Category;
 use App\Models\Likeable;
 use App\Models\Post;
@@ -123,6 +124,10 @@ class PostService
             $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
                 return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
             }]);
+        });
+
+        $query->when($request->title, function (Builder $builder, string $title) {
+            return $builder->where('title', 'LIKE', "%" . TextHelper::clearHtml($title) . "%");
         });
 
         return $query;

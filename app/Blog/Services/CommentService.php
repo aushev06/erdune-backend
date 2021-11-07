@@ -4,6 +4,7 @@
 namespace App\Blog\Services;
 
 
+use App\Blog\Helpers\TextHelper;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
@@ -45,6 +46,9 @@ class CommentService
             })
             ->when($request->user_ids, static function (Builder $builder, string $ids) {
                 return $builder->whereIn('user_id', explode(',', $ids));
+            })
+            ->when($request->text, static function (Builder $builder, string $text) {
+                return $builder->where('text', 'LIKE', "%" . TextHelper::clearHtml($text) . "%");
             })
             ->take(10)
             ->orderByDesc('id')
