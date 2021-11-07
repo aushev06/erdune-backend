@@ -46,7 +46,6 @@ class HomeService
         'views',
         'likes',
         'dislikes',
-        'comments',
         'created_at',
         'user'
       ]);
