@@ -24,7 +24,8 @@ use JetBrains\PhpStorm\ArrayShape;
 class HomeService
 {
 
-    private function getPosts(Request $request) {
+    private function getPosts(Request $request): array
+    {
       $query = Post::query()->where('status', StatusEnum::STATUS_ACTIVE);
 
       $query->when($request->new, function (Builder $builder) {
@@ -47,7 +48,6 @@ class HomeService
         'likes',
         'dislikes',
         'created_at',
-        'user'
       ]);
 
       $query->when($request->user('api'), function (Builder $builder, User $user) {
@@ -78,7 +78,7 @@ class HomeService
       $posts = $this->getPosts($request);
       $comments = $this->getComments();
       $categories = $this->getCategories();
-      
+
       return json_encode([
         'posts' => $posts,
         'comments' => $comments,
