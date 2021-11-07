@@ -11,6 +11,6 @@ class HomeController extends Controller
     public function __construct(private HomeService $homeService) {}
 
     public function index(Request $request) {
-        $this->homeService->getMainInfo();
+        $this->homeService->getMainInfo($request);
     }
 }

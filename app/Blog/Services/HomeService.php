@@ -24,7 +24,7 @@ use JetBrains\PhpStorm\ArrayShape;
 class HomeService
 {
 
-    private function getPosts() {
+    private function getPosts(Request $request) {
       $query = Post::query()->where('status', StatusEnum::STATUS_ACTIVE);
 
       $query->when($request->new, function (Builder $builder) {
