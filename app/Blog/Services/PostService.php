@@ -75,7 +75,7 @@ class PostService
 
     public function getPostsQuery(Request $request): Builder
     {
-        $query = Post::query()->limit($request->limit || 10)->when($request->user('api') && $request->status, static function (Builder $builder) use ($request) {
+        $query = Post::query()->when($request->user('api') && $request->status, static function (Builder $builder) use ($request) {
             return $builder
                 ->where('status', $request->status)
                 ->where('user_id', $request->user('api')->id);
@@ -128,7 +128,7 @@ class PostService
             return $builder->where('title', 'LIKE', "%" . TextHelper::clearHtml($title) . "%");
         });
 
-        return $query;
+        return $query->paginate($request->limit || 10);
 
     }
 
