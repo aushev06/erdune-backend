@@ -78,11 +78,11 @@ class HomeService
       $comments = $this->getComments();
       $categories = $this->getCategories();
       
-      return [
+      return json_encode([
         'posts' => $posts,
         'comments' => $comments,
         'categories' => $categories
-      ];
+      ]);
     }
 
 }
