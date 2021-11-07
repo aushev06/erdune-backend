@@ -22,8 +22,7 @@ Route::middleware('auth:sanctum')->get(
 );
 
 
-Route::group(
-    ['auth:sanctum'],
+Route::middleware(['auth:sanctum'])->group(
     function () {
         Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['store', 'update', 'destroy']);
 
