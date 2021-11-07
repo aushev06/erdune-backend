@@ -73,7 +73,7 @@ class PostService
     }
 
 
-    public function getPostsQuery(Request $request): Builder
+    public function getPostsQuery(Request $request)
     {
         $query = Post::query()->when($request->user('api') && $request->status, static function (Builder $builder) use ($request) {
             return $builder
