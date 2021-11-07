@@ -132,7 +132,6 @@ class PostService
 
     }
 
-
     #[ArrayShape(['success' => "int", 'file' => "array"])] public static function saveImage(Request $request)
     {
         $url = $request->post('url');
