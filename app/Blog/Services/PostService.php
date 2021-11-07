@@ -85,18 +85,16 @@ class PostService
                 ->when($request->user_ids, static function (Builder $subBuilder, string $ids) {
                     return $subBuilder->whereIn('user_id', explode(',', $ids));
                 });
-
-
         });
 
-        $query->when($request->popular, function (Builder $builder, string $popular) {
-            $builder->orderByDesc('likes_count');
-            $builder->orderByDesc('dislikes_count');
-            $builder->orderByDesc('views');
-            $builder->orderByDesc('comments_count');
-            return $builder;
+        $query->when($request->new, function (Builder $builder, string $popular) {
+          return $builder->orderByDesc('id');
         }, function (Builder $builder) {
-            return $builder->orderByDesc('id');
+          $builder->orderByDesc('likes_count');
+          $builder->orderByDesc('dislikes_count');
+          $builder->orderByDesc('views');
+          $builder->orderByDesc('comments_count');
+          return $builder;
         });
 
         $query->when($request->themes, function (Builder $builder, string $themes) {
