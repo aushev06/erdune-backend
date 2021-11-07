@@ -48,6 +48,7 @@ class HomeService
             'likes',
             'dislikes',
             'created_at',
+            'user'
         ]);
 
         $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
