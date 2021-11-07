@@ -59,13 +59,13 @@ class HomeService
             }]);
         });
 
-        return $query->limit(10)->get()->toArray();
+        return $query->limit(5)->get()->toArray();
     }
 
     private function getComments()
     {
         return Comment::with('post:id,slug,title')
-            ->take(10)
+            ->take(5)
             ->orderByDesc('id')
             ->get()
             ->toArray();
