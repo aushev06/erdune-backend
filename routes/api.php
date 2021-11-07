@@ -38,7 +38,7 @@ Route::group(
 );
 
 
-Route::get('/', \App\Blog\Controllers\HomeController::class)->only(['index']);
+Route::get('/', [\App\Blog\Controllers\HomeController::class, 'index']);
 Route::get('users/categories', [\App\Blog\Controllers\UsersController::class, 'categories']);
 Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);
 Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
