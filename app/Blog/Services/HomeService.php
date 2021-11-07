@@ -37,7 +37,7 @@ class HomeService
         return $builder;
       });
 
-      $query->get([
+      $query->select([
         'id',
         'title',
         'slug',
