@@ -74,7 +74,7 @@ class PostController extends Controller
                 }]);
             })
             ->first();
-        // $this->authorize('view', $post);
+        $this->authorize('view', $post);
 
         return new PostResource($post);
     }
