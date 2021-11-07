@@ -87,7 +87,7 @@ class PostService
                 });
         });
 
-        $query->when($request->new, function (Builder $builder, string $popular) {
+        $query->when($request->new, function (Builder $builder) {
           return $builder->orderByDesc('id');
         }, function (Builder $builder) {
           $builder->orderByDesc('likes_count');
@@ -127,6 +127,8 @@ class PostService
         $query->when($request->title, function (Builder $builder, string $title) {
             return $builder->where('title', 'LIKE', "%" . TextHelper::clearHtml($title) . "%");
         });
+
+        $query->limit($request->limit || 10);
 
         return $query;
 
