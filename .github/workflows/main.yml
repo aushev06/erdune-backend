@@ -25,3 +25,5 @@ jobs:
           script: |
             cd ./erdune/public_html/
             git pull
+            /opt/bin/php80/bin/php /usr/local/composer install
+            /opt/bin/php80/bin/php artisan migrate
