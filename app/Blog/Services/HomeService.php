@@ -78,7 +78,7 @@ class HomeService
       $comments = $this->getComments();
       $categories = $this->getCategories();
       
-      return json_encode([
+      return dd([
         'posts' => $posts,
         'comments' => $comments,
         'categories' => $categories
