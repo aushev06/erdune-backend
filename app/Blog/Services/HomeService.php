@@ -73,7 +73,7 @@ class HomeService
 
     private function getPopularUsers()
     {
-        return User::take(10)
+        return User::take(5)
             ->withCount('posts')
             ->orderBy('posts_count', 'DESC')
             ->get()
@@ -82,7 +82,7 @@ class HomeService
 
     private function getCategories()
     {
-        return User::take(5)
+        return User::take(10)
             ->orderByDesc('name')
             ->get()
             ->toArray();
