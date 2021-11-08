@@ -103,7 +103,7 @@ class HomeService
             $rating = $item['posts_count'] + $item['comments_count'];
             $item['rating'] = $rating;
             return $item;
-          }, [])
+          })
       ]);
     }
 
