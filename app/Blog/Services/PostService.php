@@ -27,7 +27,7 @@ class PostService
         return DB::transaction(function () use ($post, $formRequest) {
             $post->fill($formRequest->validated());
             $post->body = $this->clearHtmlFromBody($formRequest->body);
-            $post->description = htmlspecialchars($formRequest->description);
+            $post->description = $this->getFirstTextFromBody($post->body);
             $post->user_id = $formRequest->user('api')->id;
             $post->slug = SlugService::createSlug(Post::class, 'slug', $post->title);
             $post->img = $this->getImage($formRequest->body);
@@ -45,9 +45,18 @@ class PostService
 
             $post->themes()->sync($themeIds);
 
-
             return Post::where('id', $post->id)->first();
         });
+    }
+
+    private function getFirstTextFromBody($body): string {
+      foreach ($body as $block) {
+        if (isset($block['data']['text'])) {
+          return $block['data']['text'];
+        }
+      }
+
+      return '';
     }
 
     private function clearHtmlFromBody($body): string

@@ -33,8 +33,6 @@ class LikeService
             'likeable_id' => $id,
             'type' => $likeType,
             'user_id' => $userId
-
         ]);
-
     }
 }
