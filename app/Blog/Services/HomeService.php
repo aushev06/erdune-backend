@@ -93,23 +93,17 @@ class HomeService
         $posts = $this->getPosts($request);
         $comments = $this->getComments();
         $categories = $this->getCategories();
-        $users = array_map(function($item) {
-            $rating = $item['posts_count'] + $item['comments_count'];
-            $item['rating'] = $rating;
-            return $item;
-          }, $this->getPopularUsers());
+        $users = collect($this->getPopularUsers())->map(function($item) {
+          $rating = $item['posts_count'] + $item['comments_count'];
+          $item['rating'] = $rating;
+          return $item;
+        })->sortBy('rating');
 
-        $sortedUsers = usort($users, function ($a, $b) {
-          return $a['rating'] > $b['rating'] ? 1 : -1;
-        });
-
-        dd($sortedUsers);
-        
         return response()->json([
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => $sortedUsers
+          'users' => $users
       ]);
     }
 
