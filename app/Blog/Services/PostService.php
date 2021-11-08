@@ -26,8 +26,9 @@ class PostService
     {
         return DB::transaction(function () use ($post, $formRequest) {
             $post->fill($formRequest->validated());
-            $post->body = $this->clearHtmlFromBody($formRequest->body);
-            $post->description = $this->getFirstTextFromBody($post->body);
+            $body = $this->clearHtmlFromBody($formRequest->body);
+            $post->body = $body;
+            $post->description = $this->getFirstTextFromBody($body);
             $post->user_id = $formRequest->user('api')->id;
             $post->slug = SlugService::createSlug(Post::class, 'slug', $post->title);
             $post->img = $this->getImage($formRequest->body);
@@ -50,13 +51,13 @@ class PostService
     }
 
     private function getFirstTextFromBody($body): string {
-      foreach ($body as $block) {
-        if (isset($block['data']['text'])) {
-          return $block['data']['text'];
-        }
+      foreach ($body as $key => $block) {
+          if (isset($block['data']['text'])) {
+              return $block['data']['text'];
+          }
       }
 
-      return '';
+      return "";
     }
 
     private function clearHtmlFromBody($body): string
