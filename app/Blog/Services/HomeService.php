@@ -99,11 +99,11 @@ class HomeService
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => array_map($users. function($item) {
+          'users' => array_map(function($item) {
             $rating = $item['posts_count'] + $item['comments_count'];
             $item['rating'] = $rating;
             return $item;
-          })
+          }, $users)
       ]);
     }
 
