@@ -99,7 +99,9 @@ class HomeService
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => $users
+          'users' => array_reduce($users. function($sum, $item) {
+            return $item['posts_count'] + $item['comments_count'];
+          }, 0)
       ]);
     }
 
