@@ -31,7 +31,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
-    protected $withCount = ['comments'];
+    protected $withCount = ['comments', 'posts'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -87,7 +87,11 @@ class User extends Authenticatable
     }
 
     public function comments() {
-        return $this->hasMany(Comment::class);
-    }
+      return $this->hasMany(Comment::class);
+  }
+
+  public function posts() {
+      return $this->hasMany(Post::class);
+  }
 
 }

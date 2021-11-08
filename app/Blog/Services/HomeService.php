@@ -71,9 +71,18 @@ class HomeService
             ->toArray();
     }
 
+    private function getPopularUsers()
+    {
+        return User::take(10)
+            ->withCount('posts')
+            ->orderBy('posts_count', 'DESC')
+            ->get()
+            ->toArray();
+    }
+
     private function getCategories()
     {
-        return Category::take(10)
+        return User::take(5)
             ->orderByDesc('name')
             ->get()
             ->toArray();
@@ -84,11 +93,13 @@ class HomeService
         $posts = $this->getPosts($request);
         $comments = $this->getComments();
         $categories = $this->getCategories();
+        $users = $this->getPopularUsers();
 
         return response()->json([
           'posts' => $posts,
           'comments' => $comments,
-          'categories' => $categories
+          'categories' => $categories,
+          'users' => $users
       ]);
     }
 
