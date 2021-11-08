@@ -98,14 +98,18 @@ class HomeService
             $item['rating'] = $rating;
             return $item;
           }, $this->getPopularUsers());
+
+        $sortedUsers = usort($users, function ($a, $b) {
+          return $a['rating'] > $b['rating'] ? 1 : -1;
+        });
+
+        dd($sortedUsers)
         
         return response()->json([
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => usort($users, function ($a, $b) {
-            return $a['rating'] > $b['rating'] ? 1 : -1;
-          })
+          'users' => $sortedUsers
       ]);
     }
 
