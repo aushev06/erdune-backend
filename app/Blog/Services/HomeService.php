@@ -105,7 +105,7 @@ class HomeService
           'categories' => $categories,
           'users' => usort($users, function ($a, $b) {
             return $a['rating'] - $b['rating'];
-          }
+          })
       ]);
     }
 
