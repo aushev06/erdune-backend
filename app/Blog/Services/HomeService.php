@@ -97,7 +97,7 @@ class HomeService
           $rating = $item['posts_count'] + $item['comments_count'];
           $item['rating'] = $rating;
           return $item;
-        })->sortBy('rating')->toArray();
+        })->sortBy('rating')->values()->all();
 
         return response()->json([
           'posts' => $posts,
