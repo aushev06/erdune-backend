@@ -103,7 +103,7 @@ class HomeService
           return $a['rating'] > $b['rating'] ? 1 : -1;
         });
 
-        dd($sortedUsers)
+        dd($sortedUsers);
         
         return response()->json([
           'posts' => $posts,
