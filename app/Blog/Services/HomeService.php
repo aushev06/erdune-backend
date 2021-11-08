@@ -97,8 +97,7 @@ class HomeService
             $rating = $item['posts_count'] + $item['comments_count'];
             $item['rating'] = $rating;
             return $item;
-          }, $this->getPopularUsers())
-        );
+          }, $this->getPopularUsers());
         
         return response()->json([
           'posts' => $posts,
