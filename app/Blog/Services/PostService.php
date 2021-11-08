@@ -26,7 +26,7 @@ class PostService
     {
         return DB::transaction(function () use ($post, $formRequest) {
             $post->fill($formRequest->validated());
-            $body = $this->clearHtmlFromBody($formRequest->body);
+            $body = $formRequest->body;
             $post->body = $body;
             $post->description = $this->getFirstTextFromBody($body);
             $post->user_id = $formRequest->user('api')->id;
