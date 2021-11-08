@@ -99,11 +99,16 @@ class HomeService
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => array_map(function($item) {
-            $rating = $item['posts_count'] + $item['comments_count'];
-            $item['rating'] = $rating;
-            return $item;
-          }, $users)
+          'users' => usort(
+            array_map(function($item) {
+              $rating = $item['posts_count'] + $item['comments_count'];
+              $item['rating'] = $rating;
+              return $item;
+            }, $users)
+          ),
+          function ($a, $b) {
+            return $a['rating'] - $b['rating'];
+          }
       ]);
     }
 
