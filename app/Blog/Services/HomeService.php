@@ -104,7 +104,7 @@ class HomeService
           'comments' => $comments,
           'categories' => $categories,
           'users' => usort($users, function ($a, $b) {
-            return $a['rating'] > $b['rating'];
+            return $a['rating'] > $b['rating'] ? 1 : -1;
           })
       ]);
     }
