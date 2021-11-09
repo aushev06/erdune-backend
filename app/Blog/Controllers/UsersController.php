@@ -4,6 +4,7 @@ namespace App\Blog\Controllers;
 
 use App\Blog\Resources\UserCollection;
 use App\Blog\Services\UserSearchService;
+use App\Blog\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-    public function __construct(private UserSearchService $searchService)
+    public function __construct(private UserSearchService $searchService, private UserService $userService)
     {
     }
 
@@ -20,8 +21,8 @@ class UsersController extends Controller
         return new UserCollection($this->searchService->findAllQuery($request)->paginate(10));
     }
 
-    public function show(User $user) {
-        return $user;
+    public function show($id) {
+        return $this->userService->show($id);
     }
 
     public function categories()
