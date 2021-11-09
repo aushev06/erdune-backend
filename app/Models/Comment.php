@@ -53,5 +53,9 @@ class Comment extends BaseModel
         return $this->hasMany(Comment::class, 'parent_id');
     }
 
+    public static function getQueryForNotification(): \Illuminate\Database\Eloquent\Builder|Comment
+    {
+        return static::query()->with(['user:name,avatar,id', 'post:title,slug,id']);
+    }
 
 }

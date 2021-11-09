@@ -32,4 +32,9 @@ class BaseModel extends Model
     {
         return DB::raw("type FROM likeables l WHERE likeable_id={$table}.id AND likeable_type LIKE '%{$model}%' AND user_id={$user->id} LIMIT 1");
     }
+
+    public static function getQueryForNotification(): \Illuminate\Database\Eloquent\Builder|Comment
+    {
+        return static::query();
+    }
 }

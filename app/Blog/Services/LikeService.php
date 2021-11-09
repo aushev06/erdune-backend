@@ -4,9 +4,11 @@
 namespace App\Blog\Services;
 
 
+use App\Blog\Notifications\SetLikeOrDislikeNotification;
 use App\Models\Comment;
 use App\Models\Likeable;
 use App\Models\Post;
+use App\Models\User;
 
 class LikeService
 {
@@ -28,11 +30,18 @@ class LikeService
             return;
         }
 
-        Likeable::query()->insert([
+        $likeTypeId = Likeable::query()->insertGetId([
             'likeable_type' => static::$types[$type],
             'likeable_id' => $id,
             'type' => $likeType,
             'user_id' => $userId
+
         ]);
+
+
+        $user = User::whereId($userId)->first();
+
+        $user->notify(new SetLikeOrDislikeNotification(Likeable::getQueryForNotification()->whereId($likeTypeId)->first()));
+
     }
 }

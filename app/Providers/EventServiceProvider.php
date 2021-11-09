@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Models\Likeable;
+use App\Observers\CommentObserver;
+use App\Observers\LikeableObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -31,6 +35,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Comment::observe(CommentObserver::class);
+        Likeable::observe(LikeableObserver::class);
     }
 }
