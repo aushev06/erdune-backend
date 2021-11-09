@@ -9,7 +9,7 @@ class UserService
 {
     public function show($id)
     {
-        $user = User::find($id)->with(['posts', 'comments']);
+        $user = User::where('id', $id)->with(['posts', 'comments'])->get();
         return $user;
     }
 }
