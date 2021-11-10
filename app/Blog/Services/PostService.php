@@ -31,7 +31,7 @@ class PostService
             $post->body = json_encode($body);
             $post->description = $this->getFirstTextFromBody($body);
             $post->user_id = $formRequest->user('api')->id;
-            $post->slug = $oldPost->title !== $formRequest->title ;
+            $post->slug = $slug;
             $post->img = $this->getImage($formRequest->body);
             $post->status = $formRequest->status ?? StatusEnum::STATUS_DRAFT;
             $post->category_id = $formRequest->category['id'] ?? null;
