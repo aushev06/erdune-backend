@@ -92,7 +92,7 @@ class HomeService
     {
         $posts = $this->getPosts($request);
         $comments = $this->getComments();
-        $categories = $this->getCategories();
+        $categories = [];
         $users = collect($this->getPopularUsers())->map(function($item) {
           $rating = $item['posts_count'] + $item['comments_count'];
           $item['rating'] = $rating;
