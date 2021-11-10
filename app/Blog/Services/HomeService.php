@@ -65,7 +65,7 @@ class HomeService
     private function getComments()
     {
         return Comment::with('post:id,slug,title')
-            ->take(10)
+            ->take(8)
             ->orderByDesc('id')
             ->get()
             ->toArray();

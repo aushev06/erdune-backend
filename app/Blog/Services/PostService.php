@@ -27,7 +27,7 @@ class PostService
         return DB::transaction(function () use ($post, $formRequest) {
             $post->fill($formRequest->validated());
             $body = $formRequest->body;
-            $post->body = $body;
+            $post->body = json_encode($body);
             $post->description = $this->getFirstTextFromBody($body);
             $post->user_id = $formRequest->user('api')->id;
             $post->slug = SlugService::createSlug(Post::class, 'slug', $post->title);
