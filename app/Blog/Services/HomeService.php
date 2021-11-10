@@ -59,7 +59,7 @@ class HomeService
             }]);
         });
 
-        return $query->limit(6)->get()->toArray();
+        return $query->limit(5)->get()->toArray();
     }
 
     private function getComments()
@@ -91,9 +91,13 @@ class HomeService
     public function getMainInfo(Request $request)
     {
         $posts = $this->getPosts($request);
-        $comments = [];
-        $categories = [];
-        $users = [];
+        $comments = $this->getComments();
+        $categories = $this->getCategories();
+        $users = collect($this->getPopularUsers())->map(function($item) {
+          $rating = $item['posts_count'] + $item['comments_count'];
+          $item['rating'] = $rating;
+          return $item;
+        })->sortByDesc('rating')->values()->all();
 
         return response()->json([
           'posts' => $posts,
