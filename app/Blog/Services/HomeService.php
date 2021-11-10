@@ -93,11 +93,7 @@ class HomeService
         $posts = $this->getPosts($request);
         $comments = [];
         $categories = [];
-        $users = collect($this->getPopularUsers())->map(function($item) {
-          $rating = $item['posts_count'] + $item['comments_count'];
-          $item['rating'] = $rating;
-          return $item;
-        })->sortByDesc('rating')->values()->all();
+        $users = [];
 
         return response()->json([
           'posts' => $posts,
