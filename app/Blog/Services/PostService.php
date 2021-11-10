@@ -25,14 +25,13 @@ class PostService
     public function save(Post $post, FormRequest $formRequest): Post
     {
         return DB::transaction(function () use ($post, $formRequest) {
-            $oldPost = Post::findOrFail($formRequest->id);
-
+            $slug = $post->title != $formRequest->title ? SlugService::createSlug(Post::class, 'slug', $formRequest->title) : $post->slug;
             $post->fill($formRequest->validated());
             $body = $formRequest->body;
             $post->body = json_encode($body);
             $post->description = $this->getFirstTextFromBody($body);
             $post->user_id = $formRequest->user('api')->id;
-            $post->slug = $oldPost->title !== $formRequest->title ? SlugService::createSlug(Post::class, 'slug', $post->title) : $oldPost->slug;
+            $post->slug = $oldPost->title !== $formRequest->title ;
             $post->img = $this->getImage($formRequest->body);
             $post->status = $formRequest->status ?? StatusEnum::STATUS_DRAFT;
             $post->category_id = $formRequest->category['id'] ?? null;
