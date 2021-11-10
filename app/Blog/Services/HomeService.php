@@ -91,7 +91,7 @@ class HomeService
     public function getMainInfo(Request $request)
     {
         $posts = $this->getPosts($request);
-        $comments = $this->getComments();
+        $comments = [];
         $categories = [];
         $users = collect($this->getPopularUsers())->map(function($item) {
           $rating = $item['posts_count'] + $item['comments_count'];
