@@ -59,7 +59,7 @@ class HomeService
             }]);
         });
 
-        return $query->limit(10)->get()->toArray();
+        return $query->limit(6)->get()->toArray();
     }
 
     private function getComments()
