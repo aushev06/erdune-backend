@@ -27,7 +27,7 @@ class SocialLoginController extends Controller
         if ($user !== null) {
             User::createIfNotExistAndAuth($user);
 
-            return redirect()->to(config('app.frontend_url') .'/?token=' . $user->createToken('auth_token')->plainTextToken);
+            return redirect()->to(config('app.frontend_url') .'/auth?token=' . $user->createToken('auth_token')->plainTextToken);
         }
 
         $newUser = [
@@ -45,7 +45,7 @@ class SocialLoginController extends Controller
 
         $user = User::createIfNotExistAndAuth(userFields:$newUser);
 
-        return redirect()->to(config('app.frontend_url') .'/?token=' . $user->createToken('auth_token')->plainTextToken);
+        return redirect()->to(config('app.frontend_url') .'/auth?token=' . $user->createToken('auth_token')->plainTextToken);
     }
 
     public function facebook()
