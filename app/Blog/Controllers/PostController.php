@@ -68,7 +68,7 @@ class PostController extends Controller
      */
     public function show(string $slug, Request $request)
     {
-        $this->service->show($slug, $request);
+        $this->postService->show($slug, $request);
     }
 
     /**
