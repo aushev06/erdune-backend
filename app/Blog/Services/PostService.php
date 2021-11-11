@@ -31,8 +31,6 @@ class PostService
                 return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
             }]);
         })->first();
-        
-      $this->authorize('view', $post);
 
       $user->increment('views');
       $post->save();
