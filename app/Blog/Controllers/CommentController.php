@@ -69,7 +69,11 @@ class CommentController extends Controller
 
         return
             $queryBuilder
-                ->orderByDesc('id')
+                ->when($request->popular, static function (\Illuminate\Database\Eloquent\Builder $builder) {
+                    return $builder->orderByDesc('likes_count')->orderByDesc('dislikes_count');
+                }, static function (Builder $builder) {
+                    return $builder->orderByDesc('id');
+                })
                 ->with('comments')
                 ->where('parent_id', null)
                 ->get();

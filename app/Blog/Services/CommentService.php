@@ -33,7 +33,7 @@ class CommentService
             ->with('post')
             ->orderByDesc('likes_count')
             ->orderByDesc('dislikes_count')
-            ->where('created_at', '!=', 'now()')
+            ->where('created_at', '=', 'now()')
             ->first();
     }
 
