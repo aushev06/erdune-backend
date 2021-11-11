@@ -54,7 +54,5 @@ Route::get('users/{id}', [\App\Blog\Controllers\UserController::class, 'show']);
 
 Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
 Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);
-Route::get('posts/{post}/comments', function() {
-  return 'qwe';
-});
+Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
 
