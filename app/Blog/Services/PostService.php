@@ -11,6 +11,7 @@ use App\Models\Likeable;
 use App\Models\Post;
 use App\Models\Theme;
 use App\Models\User;
+use App\Blog\Resources\PostResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
@@ -22,6 +23,23 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class PostService
 {
+
+    public function show(string $slug, Request $request) {
+      $post = Post::query()->where('slug', $slug)
+        ->when($request->user('api'), function (Builder $builder, User $user) {
+            $builder->addSelect(['liked_type' => function(QB $qb) use($user) {
+                return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
+            }]);
+        })->first();
+        
+      $this->authorize('view', $post);
+
+      $user->increment('views');
+      $post->save();
+
+      return new PostResource($post);
+    }
+
     public function save(Post $post, FormRequest $formRequest): Post
     {
         return DB::transaction(function () use ($post, $formRequest) {

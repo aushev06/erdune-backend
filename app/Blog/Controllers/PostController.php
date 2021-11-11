@@ -68,19 +68,7 @@ class PostController extends Controller
      */
     public function show(string $slug, Request $request)
     {
-        $post = Post::query()->where('slug', $slug)
-            ->when($request->user('api'), function (Builder $builder, User $user) {
-                $builder->addSelect(['liked_type' => function(QB $qb) use($user) {
-                    return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
-                }]);
-            })
-            ->first();
-        $this->authorize('view', $post);
-
-        $post->views = $post->views++;
-        $post->save();
-
-        return new PostResource($post);
+        $this->service->show($slug, $request);
     }
 
     /**
