@@ -32,7 +32,6 @@ class CommentController extends Controller
             : $this->service->getCommentsWithoutTopComment($request);
     }
 
-
     public function store(SaveCommentRequest $request, Comment $comment): Comment
     {
         try {

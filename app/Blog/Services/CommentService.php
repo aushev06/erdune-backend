@@ -30,10 +30,11 @@ class CommentService
     public function show(Post $post, Request $request)
     {
       $query = $post->comments();
+      $user = $request->user('api');
 
-      if ($user = $request->user('api')) {
-        $query->addSelect(['liked_type' => function (Builder $q) use ($user) {
-            return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
+      if ($user) {
+        $query->addSelect(['liked_type' => function (\Illuminate\Database\Eloquent\Builder $builder) use ($user) {
+            return $builder->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
         }]);
       }
 

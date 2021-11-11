@@ -14,7 +14,7 @@ class SaveCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth('api')->user()->status === StatusEnum::STATUS_ACTIVE;
+        return auth('api')->user() && auth('api')->user()->status === StatusEnum::STATUS_ACTIVE;
     }
 
     /**
