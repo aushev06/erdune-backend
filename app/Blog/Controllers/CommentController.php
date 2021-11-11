@@ -6,7 +6,6 @@ use App\Blog\Requests\SaveCommentRequest;
 use App\Blog\Services\CommentService;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
-use App\Models\Likeable;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Query\Builder;
@@ -18,9 +17,7 @@ use Illuminate\Support\Facades\Log;
 class CommentController extends Controller
 {
 
-    public function __construct(private CommentService $service)
-    {
-    }
+    public function __construct(private CommentService $service) { }
 
 
     public function index(Request $request)
