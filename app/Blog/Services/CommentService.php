@@ -9,6 +9,7 @@ use App\Models\Comment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class CommentService
 {
