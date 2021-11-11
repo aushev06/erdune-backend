@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -75,6 +76,9 @@ class PostController extends Controller
             })
             ->first();
         $this->authorize('view', $post);
+
+        $post->views = $post->views++;
+        $post->save();
 
         return new PostResource($post);
     }
