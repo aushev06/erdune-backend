@@ -28,7 +28,6 @@ class LikeService
 
         if (!$likeType) {
           dd(123)
-            return;
         }
 
         $likeTypeId = Likeable::query()->insertGetId([
