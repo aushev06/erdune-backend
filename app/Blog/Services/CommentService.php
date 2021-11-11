@@ -26,6 +26,26 @@ class CommentService
         return Comment::query()->where('id', $comment->id)->first();
     }
 
+    public function show(Post $post, Request $request): array
+    {
+      $query = $post->comments();
+
+      if ($user = $request->user('api')) {
+        $query->addSelect(['liked_type' => function (Builder $q) use ($user) {
+            return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
+        }]);
+      }
+
+      $query->when($request->orderBy, function (Builder $builder) {
+        if ($request->orderBy === 'popular') {
+          return $builder->orderByDesc('likes_count')->orderByDesc('dislikes_count');
+        } else {
+          return $builder->orderByDesc('id');
+        }
+      });
+
+      return $query->with('comments')->where('parent_id', null)->get();
+    }
 
     public function getTopComment(): ?Comment
     {

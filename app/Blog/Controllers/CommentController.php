@@ -58,21 +58,7 @@ class CommentController extends Controller
 
     public function show(Post $post, Request $request)
     {
-        $queryBuilder = $post->comments();
-
-
-        if ($user = $request->user('api')) {
-            $queryBuilder->addSelect(['liked_type' => function (Builder $q) use ($user) {
-                return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
-            }]);
-        }
-
-        return
-            $queryBuilder
-                ->orderByDesc('id')
-                ->with('comments')
-                ->where('parent_id', null)
-                ->get();
+        return $this->service->show($post, $request);
     }
 
     public function destroy(Comment $comment)
