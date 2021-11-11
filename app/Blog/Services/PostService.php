@@ -38,7 +38,7 @@ class PostService
         throw new \Exception('Доступ запрещён к записи :(', 403);
       }
 
-      $user->increment('views');
+      $post->increment('views');
       $post->save();
 
       return new PostResource($post);
