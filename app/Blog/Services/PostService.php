@@ -34,6 +34,10 @@ class PostService
         
       // $this->authorize('view', $post);
 
+      if ($post->status === StatusEnum::STATUS_DRAFT && $request->api('user')->id !== $post->user_id) {
+        throw new \Exception('Доступ запрещён к записи :(', 403);
+      }
+
       $user->increment('views');
       $post->save();
 
