@@ -27,6 +27,7 @@ class LikeService
             ->delete();
 
         if (!$likeType) {
+          dd(123)
             return;
         }
 
