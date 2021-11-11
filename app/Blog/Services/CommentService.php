@@ -6,7 +6,7 @@ namespace App\Blog\Services;
 
 use App\Blog\Helpers\TextHelper;
 use App\Models\Comment;
-use Illuminate\Database\Query\Builder as QB;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class CommentService
       $user = $request->user('api');
 
       if ($user) {
-        $query->addSelect(['liked_type' => function (QB $builder) use ($user) {
+        $query->addSelect(['liked_type' => function (QueryBuilder $builder) use ($user) {
             return $builder->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
         }]);
       }
