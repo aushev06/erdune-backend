@@ -44,13 +44,17 @@ Route::middleware(['auth:sanctum'])->group(
 
 
 Route::get('/', [\App\Blog\Controllers\HomeController::class, 'index']);
-Route::get('users/categories', [\App\Blog\Controllers\UsersController::class, 'categories']);
-Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);
-Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
-Route::resource('users', \App\Blog\Controllers\UsersController::class)->only(['index', 'show']);
-Route::get('posts/{post}/comments', [\App\Blog\Controllers\CommentController::class, 'show']);
 Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy', 'store', 'update']);
 Route::apiResource('categories', \App\Blog\Controllers\CategoryController::class);
 Route::apiResource('directories', \App\Blog\Controllers\DirectoryController::class)->only(['index']);
 
+Route::resource('users', \App\Blog\Controllers\UsersController::class)->only(['index', 'show']);
+Route::get('users/categories', [\App\Blog\Controllers\UsersController::class, 'categories']);
 Route::get('users/{id}', [\App\Blog\Controllers\UserController::class, 'show']);
+
+Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
+Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);
+Route::get('posts/{post}/comments', function() {
+  return 'qwe';
+});
+
