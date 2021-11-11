@@ -27,7 +27,7 @@ class CommentService
         return Comment::query()->where('id', $comment->id)->first();
     }
 
-    public function show(Post $post, Request $request): array
+    public function show(Post $post, Request $request)
     {
       $query = $post->comments();
 
