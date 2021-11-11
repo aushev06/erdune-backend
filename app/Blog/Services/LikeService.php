@@ -27,7 +27,7 @@ class LikeService
             ->delete();
 
         if (!$likeType) {
-          dd(123)
+          dd(123);
         }
 
         $likeTypeId = Likeable::query()->insertGetId([
