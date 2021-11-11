@@ -40,7 +40,7 @@ class CommentService
         }]);
       }
 
-      $query->when($request->orderBy, function (Builder $builder) {
+      $query->when($request->orderBy, function (Builder $builder) use ($request) {
         if ($request->orderBy === 'popular') {
           return $builder->orderByDesc('likes_count')->orderByDesc('dislikes_count');
         } else {
