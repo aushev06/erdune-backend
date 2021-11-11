@@ -27,7 +27,7 @@ class LikeService
             ->delete();
 
         if (!$likeType) {
-          dd(123);
+            return;
         }
 
         $likeTypeId = Likeable::query()->insertGetId([
@@ -35,13 +35,12 @@ class LikeService
             'likeable_id' => $id,
             'type' => $likeType,
             'user_id' => $userId
-
         ]);
-
 
         $user = User::whereId($userId)->first();
 
         $user->notify(new SetLikeOrDislikeNotification(Likeable::getQueryForNotification()->whereId($likeTypeId)->first()));
 
+        return json_encode($likeTypeId);
     }
 }
