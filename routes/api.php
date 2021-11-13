@@ -32,11 +32,9 @@ Route::middleware('auth:sanctum')->group(
     function () {
         Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['store', 'update', 'destroy']);
 
-        Route::options('posts/upload', function () {
-            return "ok";
-        });
-
+        Route::options('posts/upload', function () { return "ok"; });
         Route::post('posts/upload', \App\Blog\Actions\UploadAction::class);
+        
         Route::patch('/user/{user}', \App\Blog\Actions\ProfileAction::class);
         Route::post('/likes', [\App\Blog\Controllers\LikeController::class, 'like']);
     }
