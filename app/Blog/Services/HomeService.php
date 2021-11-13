@@ -51,13 +51,13 @@ class HomeService
             'user_id'
         ]);
 
-        $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
+        // $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
 
-        $query->when($request->user('api'), function (Builder $builder, User $user) {
-            $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
-                return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
-            }]);
-        });
+        // $query->when($request->user('api'), function (Builder $builder, User $user) {
+        //     $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
+        //         return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
+        //     }]);
+        // });
 
         return $query->limit(5)->get()->toArray();
     }
