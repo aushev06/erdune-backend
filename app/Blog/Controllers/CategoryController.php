@@ -16,7 +16,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::query()->withCount('posts')->where('posts_count', '!=', 0)->get();
+      $query = Category::query();
+      $query->has('posts', '>', 0);
+
+      return $query->get();
     }
 
     /**
