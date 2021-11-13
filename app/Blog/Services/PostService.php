@@ -194,7 +194,7 @@ class PostService
               "name" => $info['basename'],
               "extension" => $info['extension'],
               "title" => $info['filename']
-            ],
+            ]
           ];
         }
 
