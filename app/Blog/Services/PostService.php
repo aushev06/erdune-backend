@@ -184,16 +184,17 @@ class PostService
         }
 
         if ($request->file('file')) {
-          $filename = $request->file('file')->store('public/files');
-          $info = pathinfo($filename);
+          $path = $request->file('file')->store('public/files');
+          $info = pathinfo($path);
+          $filename = $request->file('file')->getClientOriginalName();
           return [
             'success' => 1,
             'file' => [
-              'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $filename])),
+              'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $path])),
               "size" => Storage::size('public/files/' . $info['basename']),
-              "name" => $info['basename'],
+              "name" => $filename,
               "extension" => $info['extension'],
-              "title" => $info['filename']
+              "title" => $filename
             ]
           ];
         }
