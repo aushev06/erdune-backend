@@ -32,7 +32,11 @@ Route::middleware('auth:sanctum')->group(
     function () {
         Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['store', 'update', 'destroy']);
 
-        Route::options('posts/upload', function () { return "ok"; });
+        Route::options('posts/upload', function () {
+          header('Access-Control-Allow-Origin: *');  
+          header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+          return 'ok'
+        });
         Route::post('posts/upload', \App\Blog\Actions\UploadAction::class);
         
         Route::patch('/user/{user}', \App\Blog\Actions\ProfileAction::class);
