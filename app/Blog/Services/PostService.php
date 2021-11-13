@@ -124,10 +124,10 @@ class PostService
         $query->when($request->new, function (Builder $builder) {
           return $builder->orderByDesc('id');
         }, function (Builder $builder) {
-//          $builder->orderByDesc('likes_count');
-//          $builder->orderByDesc('dislikes_count');
-//          $builder->orderByDesc('views');
-//          $builder->orderByDesc('comments_count');
+          $builder->orderByDesc('likes_count');
+          $builder->orderByDesc('dislikes_count');
+          $builder->orderByDesc('views');
+          $builder->orderByDesc('comments_count');
           return $builder;
         });
 

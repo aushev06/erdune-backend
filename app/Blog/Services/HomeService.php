@@ -31,10 +31,10 @@ class HomeService
         $query->when($request->new, function (Builder $builder) {
             return $builder->orderByDesc('id');
         }, function (Builder $builder) {
-//            $builder->orderByDesc('likes_count');
-//            $builder->orderByDesc('dislikes_count');
-//            $builder->orderByDesc('views');
-//            $builder->orderByDesc('comments_count');
+            $builder->orderByDesc('likes_count');
+            $builder->orderByDesc('dislikes_count');
+            $builder->orderByDesc('views');
+            $builder->orderByDesc('comments_count');
             return $builder;
         });
 
@@ -51,11 +51,13 @@ class HomeService
             'user_id'
         ]);
 
-//        $query->when($request->user('api'), function (Builder $builder, User $user) {
-//            $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
-//                return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
-//            }]);
-//        });
+        $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
+
+        $query->when($request->user('api'), function (Builder $builder, User $user) {
+            $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
+                return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
+            }]);
+        });
 
         return $query->limit(5)->get()->toArray();
     }
@@ -71,16 +73,20 @@ class HomeService
 
     private function getPopularUsers()
     {
-        return User::take(5)
-            ->withCount('posts')
-            ->orderBy('posts_count', 'DESC')
+        return User::query()
+            ->take(5)
+            ->limit(5)
+            ->orderByDesc('posts_count')
+            ->orderByDesc('comments_count')
             ->get()
             ->toArray();
     }
 
     private function getCategories()
     {
-        return User::take(10)
+        return Category::query()
+            ->take(10)
+            ->limit(10)
             ->orderByDesc('name')
             ->get()
             ->toArray();
