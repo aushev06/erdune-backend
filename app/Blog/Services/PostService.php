@@ -32,7 +32,7 @@ class PostService
                 return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
             }]);
         })->first();
-        
+
       // $this->authorize('view', $post);
 
       // if ($post->status === StatusEnum::STATUS_DRAFT && $request->api('user')->id !== $post->user_id) {
@@ -124,10 +124,10 @@ class PostService
         $query->when($request->new, function (Builder $builder) {
           return $builder->orderByDesc('id');
         }, function (Builder $builder) {
-          $builder->orderByDesc('likes_count');
-          $builder->orderByDesc('dislikes_count');
-          $builder->orderByDesc('views');
-          $builder->orderByDesc('comments_count');
+//          $builder->orderByDesc('likes_count');
+//          $builder->orderByDesc('dislikes_count');
+//          $builder->orderByDesc('views');
+//          $builder->orderByDesc('comments_count');
           return $builder;
         });
 

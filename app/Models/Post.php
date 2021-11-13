@@ -43,9 +43,9 @@ class Post extends Model
     ];
 
 
-    protected $with = ['user', 'themes', 'category'];
+//    protected $with = ['user', 'themes', 'category'];
 
-    protected $withCount = ['comments', 'likes', 'dislikes'];
+//    protected $withCount = ['comments', 'likes', 'dislikes'];
 
     public function user(): BelongsTo
     {
