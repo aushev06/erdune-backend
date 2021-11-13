@@ -40,7 +40,7 @@ class CommentController extends Controller
 
     public function update(SaveCommentRequest $request, Comment $comment): Comment
     {
-       $this->save($request, $comment)
+       $this->save($request, $comment);
     }
 
     public function show(Post $post, Request $request)
