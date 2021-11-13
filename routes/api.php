@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(
     function () {
         Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['store', 'update', 'destroy']);
 
-        Route::options('posts/image-by-url', function () {
+        Route::options('posts/upload', function () {
             return "ok";
         });
 
