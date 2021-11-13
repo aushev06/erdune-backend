@@ -189,7 +189,7 @@ class PostService
             'success' => 1,
             'file' => [
               'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $filename])),
-              "size": filesize('/public/storage/' . $filename),
+              "size": filesize(storage_path(). '/files/' . $filename),
               "name": $info['filename'],
               "extension": $info['extension']
             ]
