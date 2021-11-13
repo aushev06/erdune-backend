@@ -31,7 +31,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
-    // protected $withCount = ['comments', 'posts'];
+    protected $withCount = ['comments', 'posts'];
 
     /**
      * The attributes that should be hidden for arrays.
