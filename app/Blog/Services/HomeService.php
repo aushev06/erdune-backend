@@ -31,10 +31,7 @@ class HomeService
         $query->when($request->new, function (Builder $builder) {
             return $builder->orderByDesc('id');
         }, function (Builder $builder) {
-            $builder->orderByDesc('likes_count');
-            $builder->orderByDesc('dislikes_count');
             $builder->orderByDesc('views');
-            $builder->orderByDesc('comments_count');
             return $builder;
         });
 
@@ -45,8 +42,6 @@ class HomeService
             'img',
             'description',
             'views',
-            'likes',
-            'dislikes',
             'created_at',
             'user_id'
         ]);
