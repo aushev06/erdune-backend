@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(
             return "ok";
         });
 
-        Route::post('posts/image-by-url', \App\Blog\Actions\SaveImageAction::class);
+        Route::post('posts/upload', \App\Blog\Actions\UploadAction::class);
         Route::patch('/user/{user}', \App\Blog\Actions\ProfileAction::class);
         Route::post('/likes', [\App\Blog\Controllers\LikeController::class, 'like']);
     }

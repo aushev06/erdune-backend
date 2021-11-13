@@ -165,7 +165,7 @@ class PostService
 
     }
 
-    #[ArrayShape(['success' => "int", 'file' => "array"])] public static function saveImage(Request $request)
+    #[ArrayShape(['success' => "int", 'file' => "array"])] public static function uploadFile(Request $request)
     {
         $url = $request->post('url');
         if ($url) {
@@ -180,6 +180,15 @@ class PostService
                     'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
                 ]
             ];
+        }
+
+        if ($request->file('file')) {
+          return [
+            'success' => 1,
+            'file' => [
+              'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $request->file('file')->store('public/files')]))
+            ]
+          ];
         }
 
         return [

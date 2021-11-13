@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class SaveImageAction extends Controller
+class UploadAction extends Controller
 {
     public function __construct()
     {
@@ -23,6 +23,6 @@ class SaveImageAction extends Controller
      */
     public function __invoke(User $user, Request $request): array
     {
-        return PostService::saveImage($request);
+        return PostService::uploadFile($request);
     }
 }
