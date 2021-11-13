@@ -34,13 +34,13 @@ class CommentController extends Controller
 
     public function store(SaveCommentRequest $request, Comment $comment): Comment
     {
-        $this->save($request, $comment);
+        return $this->save($request, $comment);
     }
 
 
     public function update(SaveCommentRequest $request, Comment $comment): Comment
     {
-       $this->save($request, $comment);
+       return $this->save($request, $comment);
     }
 
     public function show(Post $post, Request $request)
