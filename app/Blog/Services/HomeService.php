@@ -97,7 +97,7 @@ class HomeService
             ->take(10)
             ->limit(10)
             ->has('posts', '>', 0)
-            ->orderByDesc('name')
+            ->orderByDesc('posts_count')
             ->get()
             ->toArray();
     }
