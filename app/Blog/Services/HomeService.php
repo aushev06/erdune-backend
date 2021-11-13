@@ -101,9 +101,9 @@ class HomeService
 
         return response()->json([
           'posts' => $posts,
-          'comments' => $comments,
-          'categories' => $categories,
-          'users' => $users
+          'comments' => [],
+          'categories' => [],
+          'users' => []
       ]);
     }
 
