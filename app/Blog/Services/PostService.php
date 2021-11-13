@@ -11,6 +11,7 @@ use App\Models\Likeable;
 use App\Models\Post;
 use App\Models\Theme;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use App\Blog\Resources\PostResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
@@ -189,7 +190,7 @@ class PostService
             'success' => 1,
             'file' => [
               'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $filename])),
-              "size": filesize(storage_path(). '/files/' . $info['basename']),
+              "size": Storage::size('files/' . $info['basename']),
               "name": $info['filename'],
               "extension": $info['extension']
             ]
