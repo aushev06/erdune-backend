@@ -31,7 +31,10 @@ class HomeService
         $query->when($request->new, function (Builder $builder) {
             return $builder->orderByDesc('id');
         }, function (Builder $builder) {
+            $builder->orderByDesc('likes_count');
+            $builder->orderByDesc('dislikes_count');
             $builder->orderByDesc('views');
+            $builder->orderByDesc('comments_count');
             return $builder;
         });
 
@@ -42,17 +45,19 @@ class HomeService
             'img',
             'description',
             'views',
+            'likes',
+            'dislikes',
             'created_at',
             'user_id'
         ]);
 
-        // $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
+        $query->with(['user'])->withCount(['likes', 'dislikes', 'comments']);
 
-        // $query->when($request->user('api'), function (Builder $builder, User $user) {
-        //     $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
-        //         return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
-        //     }]);
-        // });
+        $query->when($request->user('api'), function (Builder $builder, User $user) {
+            $builder->addSelect(['liked_type' => function (QB $qb) use ($user) {
+                return $qb->selectRaw(Likeable::getUserLikedTypeQuery('posts', 'Post', $user));
+            }]);
+        });
 
         return $query->limit(5)->get()->toArray();
     }
@@ -68,20 +73,16 @@ class HomeService
 
     private function getPopularUsers()
     {
-        return User::query()
-            ->take(5)
-            ->limit(5)
-            ->orderByDesc('posts_count')
-            ->orderByDesc('comments_count')
+        return User::take(5)
+            ->withCount('posts')
+            ->orderBy('posts_count', 'DESC')
             ->get()
             ->toArray();
     }
 
     private function getCategories()
     {
-        return Category::query()
-            ->take(10)
-            ->limit(10)
+        return User::take(10)
             ->orderByDesc('name')
             ->get()
             ->toArray();
@@ -90,19 +91,19 @@ class HomeService
     public function getMainInfo(Request $request)
     {
         $posts = $this->getPosts($request);
-//        $comments = $this->getComments();
-//        $categories = $this->getCategories();
-//        $users = collect($this->getPopularUsers())->map(function($item) {
-//          $rating = $item['posts_count'] + $item['comments_count'];
-//          $item['rating'] = $rating;
-//          return $item;
-//        })->sortByDesc('rating')->values()->all();
+        $comments = $this->getComments();
+        $categories = $this->getCategories();
+        $users = collect($this->getPopularUsers())->map(function($item) {
+          $rating = $item['posts_count'] + $item['comments_count'];
+          $item['rating'] = $rating;
+          return $item;
+        })->sortByDesc('rating')->values()->all();
 
         return response()->json([
           'posts' => $posts,
-          'comments' => [],
-          'categories' => [],
-          'users' => []
+          'comments' => $comments,
+          'categories' => $categories,
+          'users' => $users
       ]);
     }
 
