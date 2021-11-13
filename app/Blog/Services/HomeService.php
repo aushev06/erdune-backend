@@ -95,19 +95,19 @@ class HomeService
     public function getMainInfo(Request $request)
     {
         $posts = $this->getPosts($request);
-        $comments = $this->getComments();
-        $categories = $this->getCategories();
-        $users = collect($this->getPopularUsers())->map(function($item) {
-          $rating = 0;
-          $item['rating'] = $rating;
-          return $item;
-        })->sortByDesc('rating')->values()->all();
+        // $comments = $this->getComments();
+        // $categories = $this->getCategories();
+        // $users = collect($this->getPopularUsers())->map(function($item) {
+        //   $rating = 0;
+        //   $item['rating'] = $rating;
+        //   return $item;
+        // })->sortByDesc('rating')->values()->all();
 
         return response()->json([
           'posts' => $posts,
-          'comments' => $comments,
-          'categories' => $categories,
-          'users' => $users
+          'comments' => [],
+          'categories' => [],
+          'users' => []
       ]);
     }
 
