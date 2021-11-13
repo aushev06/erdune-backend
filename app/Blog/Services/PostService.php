@@ -185,14 +185,13 @@ class PostService
         if ($request->file('file')) {
           $filename = $request->file('file')->store('public/files');
           $info = pathinfo($filename);
-          dd('storage/' . $filename);
           return [
             'success' => 1,
             'file' => [
               'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $filename])),
-              // "size": filesize('storage/' . $filename),
-              // "name": $info['filename'],
-              // "extension": $info['extension']
+              "size": filesize('/public/storage/' . $filename),
+              "name": $info['filename'],
+              "extension": $info['extension']
             ]
           ];
         }
