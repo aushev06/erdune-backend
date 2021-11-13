@@ -143,11 +143,8 @@ class PostService
             $categories = explode(',', $categories);
             $categoryIds = [];
 
-            if (is_numeric($categories[0])) {
-                $categoryIds = Category::query()->select(['id'])->whereIn('id', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
-            } else {
-                $categoryIds = Category::query()->select(['id'])->whereIn('slug', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
-            }
+            $categoryIds = Category::query()->select(['id'])->whereIn(is_numeric($categories[0]) ? 'id' : 'slug', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
+
             $builder->whereIn('category_id', $categoryIds);
         });
 

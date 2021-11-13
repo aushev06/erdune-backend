@@ -59,6 +59,15 @@ class HomeService
             }]);
         });
 
+        $query->when($request->categories, function (Builder $builder, string $categories) {
+            $categories = explode(',', $categories);
+            $categoryIds = [];
+
+            $categoryIds = Category::query()->select(['id'])->whereIn(is_numeric($categories[0]) ? 'id' : 'slug', $categories)->get()->map(fn(Category $category) => $category->id)->toArray();
+
+            $builder->whereIn('category_id', $categoryIds);
+        });
+
         return $query->limit(5)->get()->toArray();
     }
 
