@@ -98,7 +98,7 @@ class HomeService
         $comments = $this->getComments();
         $categories = $this->getCategories();
         $users = collect($this->getPopularUsers())->map(function($item) {
-          $rating = $item['posts_count'] + $item['comments_count'];
+          $rating = 0;
           $item['rating'] = $rating;
           return $item;
         })->sortByDesc('rating')->values()->all();
