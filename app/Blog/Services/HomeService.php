@@ -76,8 +76,8 @@ class HomeService
         return User::query()
             ->take(5)
             ->limit(5)
-            ->orderByDesc('posts_count')
-            ->orderByDesc('comments_count')
+            // ->orderByDesc('posts_count')
+            // ->orderByDesc('comments_count')
             ->get()
             ->toArray();
     }
