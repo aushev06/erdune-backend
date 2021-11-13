@@ -16,10 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-      $query = Category::query();
-      $query->has('posts', '>', 0);
-
-      return $query->get();
+      return Category::query()->has('posts', '>', 0)->get();
     }
 
     /**

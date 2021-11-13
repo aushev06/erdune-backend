@@ -96,6 +96,7 @@ class HomeService
         return Category::query()
             ->take(10)
             ->limit(10)
+            ->has('posts', '>', 0)
             ->orderByDesc('name')
             ->get()
             ->toArray();
