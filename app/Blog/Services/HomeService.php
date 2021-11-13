@@ -71,20 +71,16 @@ class HomeService
 
     private function getPopularUsers()
     {
-        return User::query()
-            ->take(5)
-            ->limit(5)
-            ->orderByDesc('posts_count')
-            ->orderByDesc('comments_count')
+        return User::take(5)
+            ->withCount('posts')
+            ->orderBy('posts_count', 'DESC')
             ->get()
             ->toArray();
     }
 
     private function getCategories()
     {
-        return Category::query()
-            ->take(10)
-            ->limit(10)
+        return User::take(10)
             ->orderByDesc('name')
             ->get()
             ->toArray();
@@ -93,19 +89,19 @@ class HomeService
     public function getMainInfo(Request $request)
     {
         $posts = $this->getPosts($request);
-//        $comments = $this->getComments();
-//        $categories = $this->getCategories();
-//        $users = collect($this->getPopularUsers())->map(function($item) {
-//          $rating = $item['posts_count'] + $item['comments_count'];
-//          $item['rating'] = $rating;
-//          return $item;
-//        })->sortByDesc('rating')->values()->all();
+        $comments = $this->getComments();
+        $categories = $this->getCategories();
+        $users = collect($this->getPopularUsers())->map(function($item) {
+          $rating = $item['posts_count'] + $item['comments_count'];
+          $item['rating'] = $rating;
+          return $item;
+        })->sortByDesc('rating')->values()->all();
 
         return response()->json([
           'posts' => $posts,
-          'comments' => [],
-          'categories' => [],
-          'users' => []
+          'comments' => $comments,
+          'categories' => $categories,
+          'users' => $users
       ]);
     }
 
