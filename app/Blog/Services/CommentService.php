@@ -48,7 +48,13 @@ class CommentService
         }
       });
 
-      return $query->with('comments')->where('parent_id', null)->get();
+      return $query->with(['comments' => static function ($builder) use ($user) {
+          if ($user) {
+              $builder->addSelect(['liked_type' => function (QueryBuilder $builder) use ($user) {
+                  return $builder->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
+              }]);
+          }
+      }])->where('parent_id', null)->get();
     }
 
     public function getTopComment(): ?Comment
