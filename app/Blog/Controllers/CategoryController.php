@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::query()->width(['posts'])->get();
+        return Category::query()->get();
     }
 
     /**
