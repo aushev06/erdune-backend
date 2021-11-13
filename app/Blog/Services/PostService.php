@@ -191,9 +191,10 @@ class PostService
             'file' => [
               'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $filename])),
               "size" => Storage::size('public/files/' . $info['basename']),
-              "name" => $info['filename'],
+              "name" => $info['basename'],
               "extension" => $info['extension']
-            ]
+            ],
+            "title" => $info['filename']
           ];
         }
 
