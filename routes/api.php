@@ -21,12 +21,7 @@ Route::middleware('auth:sanctum')->get(
     }
 );
 
-Route::middleware('auth:sanctum')->get(
-    '/user/notifications',
-    function (Request $request) {
-        return $request->user()->notifications;
-    }
-);
+Route::middleware('auth:sanctum')->get('/user/notifications', [\App\Blog\Controllers\UsersController::class, 'getNotifications']);
 
 Route::middleware('auth:sanctum')->group(
     function () {

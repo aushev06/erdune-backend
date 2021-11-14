@@ -35,4 +35,10 @@ class UsersController extends Controller
             ->get();
     }
 
+    public function getNotifications(Request $request)
+    {
+        $id = $request->user()->id;
+        return $this->userService->notifications($id);
+    }
+
 }
