@@ -21,6 +21,6 @@ class UserService
 
     public function readNotifications(Request $request)
     {
-      $request->user()->notifications()->where('read_at', '=', null)->update('read_at', time());
+      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => time()]);
     }
 }
