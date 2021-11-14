@@ -3,6 +3,7 @@ namespace App\Blog\Services;
 
 use App\Blog\Helpers\TextHelper;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserService
@@ -21,6 +22,6 @@ class UserService
 
     public function readNotifications(Request $request)
     {
-      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => '2021-11-14 18:11:09']);
+      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => Carbon::now()]);
     }
 }
