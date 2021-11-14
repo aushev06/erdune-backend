@@ -18,4 +18,9 @@ class UserService
         $arr = $request->user()->notifications()->paginate(10);
         return $arr;
     }
+
+    public function readNotifications()
+    {
+      $request->user()->where('read_at', '=', null)->notifications()->update('read_at', \Carbon::now());
+    }
 }

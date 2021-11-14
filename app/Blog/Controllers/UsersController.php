@@ -39,5 +39,10 @@ class UsersController extends Controller
     {
         return $this->userService->notifications($request);
     }
+    
+    public function readNotifications()
+    {
+        return $this->userService->readNotifications();
+    }
 
 }
