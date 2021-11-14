@@ -14,9 +14,9 @@ class UserService
         return $user;
     }
 
-    public function notifications($userId)
+    public function notifications(Request $request)
     {
-        $arr = Notification::where('data.user_id', $userId)->get()->toArray();
+        $arr = $request->user()->notifications()->paginate(10);
         return $arr;
     }
 }

@@ -37,8 +37,7 @@ class UsersController extends Controller
 
     public function getNotifications(Request $request)
     {
-        $id = $request->user()->id;
-        return $this->userService->notifications($id);
+        return $this->userService->notifications($request);
     }
 
 }
