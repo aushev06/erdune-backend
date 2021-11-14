@@ -21,6 +21,6 @@ class UserService
 
     public function readNotifications(Request $request)
     {
-      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => date_default_timezone_set('UTC')]);
+      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => '2021-11-14 18:11:09']);
     }
 }
