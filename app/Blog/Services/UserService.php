@@ -19,7 +19,7 @@ class UserService
         return $arr;
     }
 
-    public function readNotifications()
+    public function readNotifications(Request $request)
     {
       $request->user()->where('read_at', '=', null)->notifications()->update('read_at', \Carbon::now());
     }
