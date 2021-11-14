@@ -6,6 +6,8 @@ namespace App\Blog\Services;
 
 use App\Blog\Helpers\TextHelper;
 use App\Models\Comment;
+use App\Models\User;
+use Illuminate\Database\Query\Builder as QB;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Likeable;
@@ -26,7 +28,7 @@ class CommentService
 
         $comment->save();
 
-        return Comment::query()->where('id', $comment->id)->first();
+        return $this->findOne($comment->id, $formRequest->user('api'));
     }
 
     public function show(Post $post, Request $request)
@@ -84,6 +86,19 @@ class CommentService
             ->orderByDesc('id')
             ->get()
             ->toArray();
+    }
+
+    public function findOne(int $id, ?User $user): ?Comment
+    {
+        return Comment::query()
+            ->with(['post', 'comments'])
+            ->when($user, static function (Builder $builder, $user) {
+                return $builder->addSelect(['liked_type' => function (QB $q) use ($user) {
+                    return $q->selectRaw(Likeable::getUserLikedTypeQuery('comments', 'Comment', $user));
+                }]);
+            })
+            ->whereId($id)
+            ->first();
     }
 
 
