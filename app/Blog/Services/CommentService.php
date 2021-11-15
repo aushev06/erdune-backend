@@ -21,7 +21,7 @@ class CommentService
     {
         $comment->fill($formRequest->validated());
         $comment->user_id = $formRequest->user('api')->id;
-
+        $comment->text = $comment->text ?? "";
         if ($comment->parent_id && $comment->id && $comment->id === $comment->parent_id) {
             $comment->parent_id = null;
         }

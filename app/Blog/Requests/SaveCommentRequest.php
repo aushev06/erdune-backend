@@ -25,7 +25,7 @@ class SaveCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'text'    => 'required',
+            'text'    => 'nullable',
             'post_id' => 'required',
             'user_reply_id' => 'exists:users,id',
             'parent_id' => 'exists:comments,id',
