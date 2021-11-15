@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $parent_id
  * @property int $likes
  * @property int $dislikes
+ * @property array $data
  *
  * @property Post $post
  * @property User $user
@@ -23,11 +24,15 @@ class Comment extends BaseModel
 {
     use HasFactory;
 
-    protected $fillable = ['text', 'post_id', 'user_reply_id', 'parent_id'];
+    protected $fillable = ['text', 'post_id', 'user_reply_id', 'parent_id', 'data'];
 
     protected $with = ['user'];
 
     protected $withCount = ['likes', 'dislikes'];
+
+    protected $casts = [
+        'data' => 'array'
+    ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

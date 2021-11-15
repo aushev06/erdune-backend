@@ -28,7 +28,8 @@ class SaveCommentRequest extends FormRequest
             'text'    => 'required',
             'post_id' => 'required',
             'user_reply_id' => 'exists:users,id',
-            'parent_id' => 'exists:comments,id'
+            'parent_id' => 'exists:comments,id',
+            'data' => 'nullable'
         ];
     }
 }

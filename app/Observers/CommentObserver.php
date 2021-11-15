@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Blog\Notifications\AddCommentNotification;
 use App\Models\Comment;
+use Illuminate\Support\Facades\App;
 
 class CommentObserver
 {
@@ -15,9 +16,12 @@ class CommentObserver
      */
     public function created(Comment $comment)
     {
-        if($comment->user_id_reply === null){ // Кто-то прокомментил пост
-            $this->sendNotification($comment->post->user, new AddCommentNotification(Comment::getQueryForNotification()->whereId($comment->id)->first()), auth()->user()->id);
+        if (!App::runningInConsole()) {
+            if($comment->user_id_reply === null){ // Кто-то прокомментил пост
+                $this->sendNotification($comment->post->user, new AddCommentNotification(Comment::getQueryForNotification()->whereId($comment->id)->first()), auth()->user()->id);
+            }
         }
+
     }
 
     /**
