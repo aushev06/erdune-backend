@@ -24,15 +24,15 @@ class SaveUserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'email' => 'unique:users,email,' . $this->user()->id,
-            'login' => 'unique:users,login,' . $this->user()->id,
+            'email' => 'unique:users,email,' . $this->user('api')->id,
+            'login' => 'unique:users,login,' . $this->user('api')->id,
             'ready_for_work' => 'boolean',
             'links' => 'array',
             'position' => 'nullable',
             'avatar' => 'nullable'
         ];
 
-        if (empty($this->user()->position) && $this->post('ready_for_work')) {
+        if (empty($this->user('api')->position) && $this->post('ready_for_work')) {
             $rules['position'] = ['required'];
         }
 

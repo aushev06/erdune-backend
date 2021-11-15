@@ -18,7 +18,7 @@ class CommentObserver
     {
         if (!App::runningInConsole()) {
             if($comment->user_id_reply === null){ // Кто-то прокомментил пост
-                $this->sendNotification($comment->post->user, new AddCommentNotification(Comment::getQueryForNotification()->whereId($comment->id)->first()), auth()->user()->id);
+                $this->sendNotification($comment->post->user, new AddCommentNotification(Comment::getQueryForNotification()->whereId($comment->id)->first()), auth()->user('api')->id);
             }
         }
 

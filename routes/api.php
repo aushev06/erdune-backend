@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get(
     '/user',
     function (Request $request) {
-        return array_merge($request->user()->toArray(), ['token' => $request->user()->createToken('auth_token')->plainTextToken]);
+        return array_merge($request->user('api')->toArray(), ['token' => $request->user('api')->createToken('auth_token')->plainTextToken]);
     }
 );
 
@@ -46,7 +46,7 @@ Route::apiResource('directories', \App\Blog\Controllers\DirectoryController::cla
 
 Route::resource('users', \App\Blog\Controllers\UsersController::class)->only(['index', 'show']);
 Route::get('users/categories', [\App\Blog\Controllers\UsersController::class, 'categories']);
-Route::get('users/{id}', [\App\Blog\Controllers\UserController::class, 'show']);
+Route::get('users/{id}', [\App\Blog\Controllers\UsersController::class, 'show']);
 
 Route::resource('posts', \App\Blog\Controllers\PostController::class)->only(['index', 'show']);
 Route::get('posts/themes', [\App\Blog\Controllers\PostController::class, 'getThemes']);

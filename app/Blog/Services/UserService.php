@@ -16,12 +16,11 @@ class UserService
 
     public function notifications(Request $request)
     {
-        $arr = $request->user()->notifications()->paginate(10);
-        return $arr;
+        return $request->user('api')->notifications()->orderByDesc('created_at')->paginate(10);
     }
 
     public function readNotifications(Request $request)
     {
-      $request->user()->notifications()->where('read_at', '=', null)->update(['read_at' => Carbon::now()]);
+      $request->user('api')->notifications()->where('read_at', '=', null)->update(['read_at' => Carbon::now()]);
     }
 }

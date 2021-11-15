@@ -32,3 +32,14 @@ Route::get(
         return Socialite::with('vkontakte')->redirect();
     }
 );
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum', 'verified'], function() {
+    Route::resources([
+        'users' => \App\Blog\Controllers\Admin\UsersController::class
+    ]);
+});

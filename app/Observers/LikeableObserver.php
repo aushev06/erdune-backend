@@ -16,7 +16,7 @@ class LikeableObserver
      */
     public function created(Likeable $likeable)
     {
-        $user = auth()->user();
+        $user = auth('api')->user();
 
         $user->notify(new SetLikeOrDislikeNotification($likeable));
     }
