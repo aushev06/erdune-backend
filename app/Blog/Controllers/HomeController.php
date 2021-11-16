@@ -13,4 +13,8 @@ class HomeController extends Controller
     public function index(Request $request) {
         return $this->homeService->getMainInfo($request);
     }
+
+    public function parseUrl(Request $request) {
+
+    }
 }

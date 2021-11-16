@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(
 
 
 Route::get('/', [\App\Blog\Controllers\HomeController::class, 'index']);
+Route::get('/parse', [\App\Blog\Controllers\HomeController::class, 'parseUrl']);
 Route::apiResource('comments', \App\Blog\Controllers\CommentController::class)->only(['index', 'destroy', 'store', 'update']);
 Route::apiResource('categories', \App\Blog\Controllers\CategoryController::class);
 Route::apiResource('directories', \App\Blog\Controllers\DirectoryController::class)->only(['index']);

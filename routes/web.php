@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum', 'verified'], function() {
     Route::resources([
-        'users' => \App\Blog\Controllers\Admin\UsersController::class
+        'users' => \App\Blog\Controllers\Admin\UsersController::class,
+        'themes' => \App\Blog\Controllers\Admin\ThemeController::class,
     ]);
 });

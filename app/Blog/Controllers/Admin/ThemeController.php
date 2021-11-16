@@ -2,27 +2,22 @@
 
 namespace App\Blog\Controllers\Admin;
 
-use App\Blog\Services\UserSearchService;
-use App\Blog\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Theme;
 use Illuminate\Http\Request;
 
-class UsersController extends Controller
+class ThemeController extends Controller
 {
-    public function __construct(private UserSearchService $searchService, private UserService $userService)
-    {
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $users = $this->searchService->findAllQuery($request)->paginate(10);
-        return view('admin.users.index', ['users' => $users]);
+        $themes = Theme::query()->paginate();
+
+        return view('admin.themes.index', ['themes' => $themes]);
     }
 
     /**
@@ -75,9 +70,12 @@ class UsersController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Theme $theme)
     {
-        return $this->userService->update($request, $user);
+        $theme->fill($request->all());
+        $theme->save();
+
+        return $theme;
     }
 
     /**

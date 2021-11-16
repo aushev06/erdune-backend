@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  */
-class Theme extends Model
+class Theme extends BaseModel
 {
     use HasFactory;
 

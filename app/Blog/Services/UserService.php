@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Blog\Services;
 
 use App\Blog\Helpers\TextHelper;
@@ -21,6 +22,15 @@ class UserService
 
     public function readNotifications(Request $request)
     {
-      $request->user('api')->notifications()->where('read_at', '=', null)->update(['read_at' => Carbon::now()]);
+        $request->user('api')->notifications()->where('read_at', '=', null)->update(['read_at' => Carbon::now()]);
+    }
+
+    public function update(Request $formRequest, User $user): User
+    {
+        $user->fill($formRequest->all());
+        $user->status = $formRequest->post('status');
+        $user->save();
+
+        return $user;
     }
 }

@@ -37,4 +37,8 @@ class BaseModel extends Model
     {
         return static::query();
     }
+
+    public function isActive(): bool {
+        return $this->status === 'active';
+    }
 }

@@ -18,7 +18,7 @@
             </x-jet-danger-button>
         </div>
 
-        <!-- Delete User Confirmation Modal -->
+        <!-- Delete UserForm Confirmation Modal -->
         <x-jet-dialog-modal wire:model="confirmingUserDeletion">
             <x-slot name="title">
                 {{ __('Delete Account') }}
