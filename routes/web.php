@@ -29,7 +29,7 @@ Route::get('/login/vk', [\App\Auth\Controllers\SocialLoginController::class, 'ca
 Route::get(
     '/social/vk',
     function (\Illuminate\Http\Request $request) {
-        // dd($request->header('referer'));
+        // dd($request->header('referer')); 
         session(['redirect_to' => $request->header('referer')]);
         return Socialite::with('vkontakte')->redirect();
     }
