@@ -28,7 +28,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/login/vk', [\App\Auth\Controllers\SocialLoginController::class, 'callbackVK']);
 Route::get(
     '/social/vk',
-    function () {
+    function (\Illuminate\Http\Request $request) {
+        // dd($request->header('referer'));
+        session(['redirect_to' => $request->header('referer')]);
         return Socialite::with('vkontakte')->redirect();
     }
 );
