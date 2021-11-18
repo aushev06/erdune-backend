@@ -23,7 +23,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $description
  * @property int $ready_for_work
  * @property boolean $recognized
- * @property string $status
+ * @property StatusEnum $status
  * @property boolean $is_new_comment_notification
  * @property boolean $is_reply_to_my_comment_notification
  * @property boolean $is_new_follower_notification

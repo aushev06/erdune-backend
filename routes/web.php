@@ -29,7 +29,7 @@ Route::get('/login/vk', [\App\Auth\Controllers\SocialLoginController::class, 'ca
 Route::get(
     '/social/vk',
     function (\Illuminate\Http\Request $request) {
-        // dd($request->header('referer')); 
+        // dd($request->header('referer'));
         session(['redirect_to' => $request->header('referer')]);
         return Socialite::with('vkontakte')->redirect();
     }
@@ -40,9 +40,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum', 'verified'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum', 'verified'], function () {
     Route::resources([
         'users' => \App\Blog\Controllers\Admin\UsersController::class,
         'themes' => \App\Blog\Controllers\Admin\ThemeController::class,
+        'posts' => \App\Blog\Controllers\Admin\PostsController::class,
     ]);
 });

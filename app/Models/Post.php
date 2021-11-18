@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property User $user
  * @property Comment[] $comments
  */
-class Post extends Model
+class Post extends BaseModel
 {
     use HasFactory;
     use SoftDeletes;

@@ -4,11 +4,13 @@
 namespace App\Auth\Controllers;
 
 
+use App\Blog\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class SocialLoginController extends Controller
 {
@@ -27,30 +29,36 @@ class SocialLoginController extends Controller
         if ($user !== null) {
             User::createIfNotExistAndAuth($user);
 
-            return redirect()->to(session('redirect_to') ? session('redirect_to').'auth?token=' . $user->createToken('auth_token')->plainTextToken : config('app.frontend_url') .'/auth?token=' . $user->createToken('auth_token')->plainTextToken);
+            if ($user->status === StatusEnum::STATUS_BLOCKED) {
+                $error = "auth?error=Пользователь заблокирован";
+
+                redirect()->to(session('redirect_to') ? session('redirect_to') . $error : config('app.frontend_url') . "/" . $error);
+            }
+
+            return redirect()->to(session('redirect_to') ? session('redirect_to') . 'auth?token=' . $user->createToken('auth_token')->plainTextToken : config('app.frontend_url') . '/auth?token=' . $user->createToken('auth_token')->plainTextToken);
         }
 
         $newUser = [
-            'name'      => $responseUser->getName(),
-            'avatar'    => $responseUser->getAvatar(),
-            'country'   => $responseUser->user['country'] ?? '',
-            'email'     => $responseUser->email ?? '',
+            'name' => $responseUser->getName(),
+            'avatar' => $responseUser->getAvatar(),
+            'country' => $responseUser->user['country'] ?? '',
+            'email' => $responseUser->email ?? '',
             'social_id' => $responseUser->getId(),
-            'role'      => 'user',
-            'network'   => 'vk',
-            'ip'        => $request->ip(),
-            'password'  => Hash::make(rand(0, 1000)),
+            'role' => 'user',
+            'network' => 'vk',
+            'ip' => $request->ip(),
+            'password' => Hash::make(rand(0, 1000)),
             'links' => []
         ];
 
-        $user = User::createIfNotExistAndAuth(userFields:$newUser);
+        $user = User::createIfNotExistAndAuth(userFields: $newUser);
 
-        return redirect()->to(session('redirect_to') ? session('redirect_to').'auth?token=' . $user->createToken('auth_token')->plainTextToken : config('app.frontend_url') .'/auth?token=' . $user->createToken('auth_token')->plainTextToken);
+        return redirect()->to(session('redirect_to') ? session('redirect_to') . 'auth?token=' . $user->createToken('auth_token')->plainTextToken : config('app.frontend_url') . '/auth?token=' . $user->createToken('auth_token')->plainTextToken);
     }
 
     public function facebook()
     {
         $responseUser = Socialite::driver('vkontakte')->user();
-        $user         = User::where('email', $responseUser->accessTokenResponseBody['email'])->first();
+        $user = User::where('email', $responseUser->accessTokenResponseBody['email'])->first();
     }
 }
