@@ -21,7 +21,7 @@ class PostPolicy
     {
         return true;
     }
- 
+
     /**
      * Determine whether the user can view the model.
      *
