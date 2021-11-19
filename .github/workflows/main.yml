@@ -20,10 +20,10 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
+          key: ${{secrets.SSH_KEY}}
           script: |
-            cd ./erdune/public_html/
+            cd /var/www/html/erdune-backend/
             git pull
             # /opt/bin/php80/bin/php /usr/local/composer install
             # /opt/bin/php80/bin/php artisan migrate
