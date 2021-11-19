@@ -21,6 +21,13 @@ Route::get(
     }
 );
 
+Route::get(
+    '/test',
+    function () {
+        return "wefwef";
+    }
+);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
