@@ -175,7 +175,7 @@ class PostService
             return [
                 'success' => 1,
                 'file' => [
-                    'url' => implode('/', [config('app.url'), 'storage', 'images', $filename])
+                    'url' => implode('/', ['storage', 'images', $filename])
                 ]
             ];
         }
@@ -187,7 +187,7 @@ class PostService
           return [
             'success' => 1,
             'file' => [
-              'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $path])),
+              'url' => str_replace('/public/', '/', implode('/', ['storage', $path])),
               "size" => Storage::size('public/files/' . $info['basename']),
               "name" => $filename,
               "extension" => $info['extension'],
@@ -199,7 +199,7 @@ class PostService
         return [
             'success' => 1,
             'file' => [
-                'url' => str_replace('/public/', '/', implode('/', [config('app.url'), 'storage', $request->file('image')->store('public/images')]))
+                'url' => str_replace('/public/', '/', implode('/', ['storage', $request->file('image')->store('public/images')]))
             ]
         ];
 
