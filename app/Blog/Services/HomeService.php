@@ -117,7 +117,8 @@ class HomeService
           'posts' => $posts,
           'comments' => $comments,
           'categories' => $categories,
-          'users' => $users
+          'users' => $users,
+          'test' => []
       ]);
     }
 
