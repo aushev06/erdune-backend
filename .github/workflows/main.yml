@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
 
       - name: Deploy app to server
-        uses: appleboy/ssh-action@v0.1.4
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
